@@ -24,6 +24,8 @@ class Phi_Net(nn.Module):
         self.fc3 = nn.Linear(60, 50)
         # One of the NN outputs is a constant bias term, which is append below
         self.fc4 = nn.Linear(50, options['dim_a']-1)
+
+        self.options = options
         
     def forward(self, x):
         x = F.relu(self.fc1(x))
@@ -50,22 +52,41 @@ class H_Net_CrossEntropy(nn.Module):
         return x
 
 def save_model(*, phi_net, h_net, modelname, options):
-    if not os.path.isdir('./models/'):
-        os.makedirs('./models/')
+    _output_path = os.path.join(options['output_path'], 'models')
+    if not os.path.isdir(_output_path):
+        os.makedirs(_output_path)
     if h_net is not None:
         torch.save({
             'phi_net_state_dict': phi_net.state_dict(),
             'h_net_state_dict': h_net.state_dict(),
             'options': dict(options)
-        }, './models/' + modelname + '.pth')
+        }, os.path.join(_output_path, (modelname + '.pth')))
     else:
         torch.save({
             'phi_net_state_dict': phi_net.state_dict(),
             'h_net_state_dict': None,
             'options': dict(options)
-        }, './models/' + modelname + '.pth')
+        }, os.path.join(_output_path, (modelname + '.pth')))
 
-def load_model(modelname, modelfolder='./models/'):
+
+def load_model(modelname):
+    model = torch.load(modelname + '.pth')
+    options = model['options']
+
+    phi_net = Phi_Net(options=options)
+    # h_net = H_Net_CrossEntropy(options)
+    h_net = None
+
+    phi_net.load_state_dict(model['phi_net_state_dict'])
+    # h_net.load_state_dict(model['h_net_state_dict'])
+
+    phi_net.eval()
+    # h_net.eval()
+
+    return Model(phi_net, h_net, options)
+
+
+def load_model_eval(modelname, modelfolder='./models/'):
     model = torch.load(modelfolder + modelname + '.pth')
     options = model['options']
 
@@ -139,13 +160,14 @@ def validation(phi_net, h_net, adaptinput: np.ndarray, adaptlabel: np.ndarray, v
     
     return adapt_prediction.numpy(), val_prediction.numpy(), a.numpy(), h_output
 
-def vis_validation(*, t, x, y, phi_net, h_net, idx_adapt_start, idx_adapt_end, idx_val_start, idx_val_end, c, options, lam=0):
+def vis_validation(*, t, x, y, phi_net, h_net, idx_adapt_start, idx_adapt_end, idx_val_start, idx_val_end, c, options, output_path_prefix, output_name, lam=0):
     """
     Visualize performance with adaptation on x[idx_adapt_start:idx_adapt_end] and validation on x[idx_val_start:idx_val_end]
     """
     adaptinput = x[idx_adapt_start:idx_adapt_end, :]
     valinput = x[idx_val_start:idx_val_end, :]
     adaptlabel = y[idx_adapt_start:idx_adapt_end, :]
+
     y_adapt, y_val, a, h_output = validation(phi_net, h_net, adaptinput, adaptlabel, valinput, options, lam=lam)
     print(f'a = {a}')
     print(f"|a| = {np.linalg.norm(a,'fro')}")
@@ -153,36 +175,56 @@ def vis_validation(*, t, x, y, phi_net, h_net, idx_adapt_start, idx_adapt_end, i
     idx_min = min(idx_adapt_start, idx_val_start)
     idx_max = max(idx_adapt_end, idx_val_end)
 
-    plt.figure(figsize=(15, 3))
+    plt.figure(figsize=(15, 12))
 
-    for i in range(3):
-        plt.subplot(1, 4, i+1)
-        plt.plot(t[idx_min:idx_max], y[idx_min:idx_max, i], 'k', alpha=0.3, label='gt')
-        plt.plot(t[idx_val_start:idx_val_end], y_val[:, i], label='val')
-        plt.plot(t[idx_adapt_start:idx_adapt_end], y_adapt[:, i], label='adapt')
-        plt.legend()
-        plt.title(r'$F_{s,' + 'xyz'[i] + '}$')
+    leg_labels = ["FR", "FL", "RR", "RL"]
+    joint_labels = ["HIP", "KNEE", "FOOT"]
+    # axis_range = [-60, 30]
 
-    if h_output is not None:
-        plt.subplot(1, 4, 4)
-        if options['loss_type'] == 'c-loss':
-            colors = ['red', 'blue', 'green']
-            for i in range(options['dim_c']):
-                plt.plot(h_output[:, i], color=colors[i], label='c'+str(i))
-                plt.hlines(c[i], xmin=0, xmax=len(h_output), linestyles='--', color=colors[i], label='c'+str(i)+' gt')
-            plt.legend()
-            plt.title('c prediction')
-        if options['loss_type'] == 'crossentropy-loss':
-            plt.plot(h_output)
-            plt.title('c prediction (after Softmax)')
-        if options['loss_type'] == 'a-loss':
-            a_gt = a.reshape(1, options['dim_a'] * options['dim_y'])
-            plt.plot(h_output - np.repeat(a_gt, h_output.shape[0], axis=0))
-            # plt.hlines(a_gt, xmin=Data['time'][idx_val_start], xmax=Data['time'][idx_val_end]-1, linestyles='--')
-            plt.title('a prediction')
-    plt.show()
+    fig, axs = plt.subplots(4, 3, figsize=(15,12))
 
-def error_statistics(data_input: np.ndarray, data_output: np.ndarray, phi_net, h_net, options):
+    row = 0
+    col = 0
+    for idx in range(len(y[0])):
+        axs[row, col].plot(t[idx_min:idx_max], y[idx_min:idx_max, idx], 'k', alpha=0.3, label='gt')
+        axs[row, col].plot(t[idx_val_start:idx_val_end], y_val[:, idx], label='val')
+        axs[row, col].plot(t[idx_adapt_start:idx_adapt_end], y_adapt[:, idx], label='adapt')
+        axs[row, col].legend()
+        axs[row, col].set_title("{:s}, {:s}".format(leg_labels[row], joint_labels[col]))
+        idx += 1
+        col += 1
+
+        if idx % 3 == 0:
+            row += 1
+            col = 0
+
+    if not os.path.exists(output_path_prefix):
+        os.makedirs(output_path_prefix)
+
+    fig.savefig(os.path.join(output_path_prefix, output_name))
+    
+    plt.close(fig)
+
+    # if h_output is not None:
+    #     plt.subplot(1, 4, 4)
+    #     if options['loss_type'] == 'c-loss':
+    #         colors = ['red', 'blue', 'green']
+    #         for i in range(options['dim_c']):
+    #             plt.plot(h_output[:, i], color=colors[i], label='c'+str(i))
+    #             plt.hlines(c[i], xmin=0, xmax=len(h_output), linestyles='--', color=colors[i], label='c'+str(i)+' gt')
+    #         plt.legend()
+    #         plt.title('c prediction')
+    #     if options['loss_type'] == 'crossentropy-loss':
+    #         plt.plot(h_output)
+    #         plt.title('c prediction (after Softmax)')
+    #     if options['loss_type'] == 'a-loss':
+    #         a_gt = a.reshape(1, options['dim_a'] * options['dim_y'])
+    #         plt.plot(h_output - np.repeat(a_gt, h_output.shape[0], axis=0))
+    #         # plt.hlines(a_gt, xmin=Data['time'][idx_val_start], xmax=Data['time'][idx_val_end]-1, linestyles='--')
+    #         plt.title('a prediction')
+    # plt.show()
+
+def error_statistics(data_input: np.ndarray, data_output: np.ndarray, phi_net, h_net, options, output_path_prefix, output_name):
     ''' Computes error statistics on given data.
         error1 is the loss without any learning 
         error2 is the loss when the prediction is the average output
@@ -196,5 +238,22 @@ def error_statistics(data_input: np.ndarray, data_output: np.ndarray, phi_net, h
 
         _, prediction, _, _ = validation(phi_net, h_net, data_input, data_output, data_input, options=options)
         error_3 = criterion(torch.from_numpy(data_output), torch.from_numpy(prediction)).item()
+
+        # make errors histrogram
+        #     make MSE values
+        errors = data_output - prediction
+        counts, bins = np.histogram(errors)
+        plt.hist(bins[:-1], bins, weights=counts)
+        plt.ylabel("Prediction Error")
+        plt.title("Prediction Error Hist.")
+
+        print(np.max(errors))
         
+        if not os.path.exists(output_path_prefix):
+            os.makedirs(output_path_prefix)
+        
+        plt.savefig(os.path.join(output_path_prefix, output_name))
+
+        plt.close()
+
         return error_1, error_2, error_3
