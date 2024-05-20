@@ -224,7 +224,24 @@ def vis_validation(*, t, x, y, phi_net, h_net, idx_adapt_start, idx_adapt_end, i
     #         plt.title('a prediction')
     # plt.show()
 
-def error_statistics(data_input: np.ndarray, data_output: np.ndarray, phi_net, h_net, options, output_path_prefix, output_name):
+def error_statistics(data_input: np.ndarray, data_output: np.ndarray, phi_net, h_net, options):
+    ''' Computes error statistics on given data.
+        error1 is the loss without any learning 
+        error2 is the loss when the prediction is the average output
+        error3 is the loss using the NN where a is adapted on the entire dataset
+     '''
+    criterion = nn.MSELoss()
+
+    with torch.no_grad():
+        error_1 = criterion(torch.from_numpy(data_output), 0.0*torch.from_numpy(data_output)).item()
+        error_2 = criterion(torch.from_numpy(data_output), torch.from_numpy(np.ones((len(data_output), 1))) * np.mean(data_output, axis=0)[np.newaxis, :])
+
+        _, prediction, _, _ = validation(phi_net, h_net, data_input, data_output, data_input, options=options)
+        error_3 = criterion(torch.from_numpy(data_output), torch.from_numpy(prediction)).item()
+
+        return error_1, error_2, error_3
+
+def error_statistics_hist(data_input: np.ndarray, data_output: np.ndarray, phi_net, h_net, options, output_path_prefix, output_name):
     ''' Computes error statistics on given data.
         error1 is the loss without any learning 
         error2 is the loss when the prediction is the average output
@@ -246,8 +263,6 @@ def error_statistics(data_input: np.ndarray, data_output: np.ndarray, phi_net, h
         plt.hist(bins[:-1], bins, weights=counts)
         plt.ylabel("Prediction Error")
         plt.title("Prediction Error Hist.")
-
-        print(np.max(errors))
         
         if not os.path.exists(output_path_prefix):
             os.makedirs(output_path_prefix)

@@ -47,10 +47,9 @@ def load_data(folder : str, expnames = None) -> List[dict]:
             Data[-1][field] = np.array(df[field].tolist(), dtype=float)
 
         # Add in some metadata from the filename
-        namesplit = filename.split('.')[0].split('_')
-        # print(namesplit)
+        namesplit = filename.split('.')[0]
         for i, field in enumerate(filename_fields):
-            Data[-1][field] = namesplit[i]
+            Data[-1][field] = namesplit
         # Data[-1]['method'] = namesplit[0]
         # Data[-1]['condition'] = namesplit[1]
 
@@ -94,6 +93,8 @@ def format_data(RawData: List[Dict['str', np.ndarray]], features: 'list[str]' = 
         # Pseudo-label for cross-entropy
         C = i
 
+        print(data['condition'])
+
         # Save to dataset
         Data.append(SubDataset(X, Y, C, {'condition': data['condition'], 'steps': data['steps']}))
 
@@ -113,6 +114,7 @@ def plot_subdataset(data, features, labels, output_path, title_prefix=''):
 
             if idx % 3 == 0:
                 axs[row,col].legend()
+                axs[row,col].grid()
 
                 if col == 0:
                     axs[row,col].set_ylabel(leg_labels[label_idx])
@@ -133,6 +135,7 @@ def plot_subdataset(data, features, labels, output_path, title_prefix=''):
         if idx % 3 == 0:
             axs[row,-1].legend()
             axs[row,-1].set_ylim(axis_range)
+            axs[row,-1].grid()
             # axs[row,col].set_xlabel('Control-Steps')
             row += 1
 
