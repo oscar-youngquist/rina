@@ -79,7 +79,7 @@ def format_data(RawData: List[Dict['str', np.ndarray]], features: 'list[str]' = 
             feature_len[feature] = len(data[feature][0])
         X = np.hstack(X)
 
-        # print(X.shape)
+        print(X.shape)
 
         # Create label array
         Y = []
@@ -88,7 +88,7 @@ def format_data(RawData: List[Dict['str', np.ndarray]], features: 'list[str]' = 
         
         Y = np.array(Y)
 
-        # print(Y.shape)
+        print(Y.shape)
 
         # Pseudo-label for cross-entropy
         C = i
@@ -126,7 +126,7 @@ def plot_subdataset(data, features, labels, output_path, title_prefix=''):
         # reset the row counter for each feature
         row = 0
 
-    axis_range = [-60, 30]
+    axis_range = [-30, 20]
     row = 0
     idx = 0
     for j , label in enumerate(labels):
