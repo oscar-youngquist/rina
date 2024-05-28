@@ -16,7 +16,7 @@ def load_data(folder : str, expnames = None) -> List[dict]:
 
     if expnames is None:
         filenames = os.listdir(folder)
-        print(filenames)
+        # print(filenames)
     elif isinstance(expnames, str): # if expnames is a string treat it as a regex expression
         filenames = []
         for filename in os.listdir(folder):
@@ -79,7 +79,7 @@ def format_data(RawData: List[Dict['str', np.ndarray]], features: 'list[str]' = 
             feature_len[feature] = len(data[feature][0])
         X = np.hstack(X)
 
-        print(X.shape)
+        # print(X.shape)
 
         # Create label array
         Y = []
@@ -88,12 +88,12 @@ def format_data(RawData: List[Dict['str', np.ndarray]], features: 'list[str]' = 
         
         Y = np.array(Y)
 
-        print(Y.shape)
+        # print(Y.shape)
 
         # Pseudo-label for cross-entropy
         C = i
 
-        print(data['condition'])
+        # print(data['condition'])
 
         # Save to dataset
         Data.append(SubDataset(X, Y, C, {'condition': data['condition'], 'steps': data['steps']}))
@@ -126,7 +126,7 @@ def plot_subdataset(data, features, labels, output_path, title_prefix=''):
         # reset the row counter for each feature
         row = 0
 
-    axis_range = [-30, 20]
+    axis_range = [-30, 30]
     row = 0
     idx = 0
     for j , label in enumerate(labels):

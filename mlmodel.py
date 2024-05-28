@@ -169,8 +169,8 @@ def vis_validation(*, t, x, y, phi_net, h_net, idx_adapt_start, idx_adapt_end, i
     adaptlabel = y[idx_adapt_start:idx_adapt_end, :]
 
     y_adapt, y_val, a, h_output = validation(phi_net, h_net, adaptinput, adaptlabel, valinput, options, lam=lam)
-    print(f'a = {a}')
-    print(f"|a| = {np.linalg.norm(a,'fro')}")
+    # print(f'a = {a}')
+    # print(f"|a| = {np.linalg.norm(a,'fro')}")
 
     idx_min = min(idx_adapt_start, idx_val_start)
     idx_max = max(idx_adapt_end, idx_val_end)

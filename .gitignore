@@ -12,6 +12,7 @@ file_list.txt
 lcm_logs/*
 lcm-logs/*
 lcm_log/*
+lcm*
 lcm_converted_log/*
 candle/*
 training_results/*
