@@ -19,11 +19,17 @@ class Phi_Net(nn.Module):
     def __init__(self, options):
         super(Phi_Net, self).__init__()
 
-        self.fc1 = nn.Linear(options['dim_x'], 50)
-        self.fc2 = nn.Linear(50, 60)
-        self.fc3 = nn.Linear(60, 50)
+        # self.fc1 = nn.Linear(options['dim_x'], 50)
+        # self.fc2 = nn.Linear(50, 60)
+        # self.fc3 = nn.Linear(60, 50)
+        # # One of the NN outputs is a constant bias term, which is append below
+        # self.fc4 = nn.Linear(50, options['dim_a']-1)
+
+        self.fc1 = nn.Linear(options['dim_x'], options['phi_first_out'])
+        self.fc2 = nn.Linear(options['phi_first_out'], options['phi_second_out'])
+        self.fc3 = nn.Linear(options['phi_second_out'], options['phi_first_out'])
         # One of the NN outputs is a constant bias term, which is append below
-        self.fc4 = nn.Linear(50, options['dim_a']-1)
+        self.fc4 = nn.Linear(options['phi_first_out'], options['dim_a']-1)
 
         self.options = options
         
@@ -43,8 +49,10 @@ class Phi_Net(nn.Module):
 class H_Net_CrossEntropy(nn.Module):
     def __init__(self, options):
         super(H_Net_CrossEntropy, self).__init__()
-        self.fc1 = nn.Linear(options['dim_a'], 20)
-        self.fc2 = nn.Linear(20, options['num_c'])
+        # self.fc1 = nn.Linear(options['dim_a'], 20)
+        # self.fc2 = nn.Linear(20, options['num_c'])
+        self.fc1 = nn.Linear(options['dim_a'], options['discrim_hidden'])
+        self.fc2 = nn.Linear(options['discrim_hidden'], options['num_c'])
         
     def forward(self, x):
         x = F.relu(self.fc1(x))
@@ -182,6 +190,7 @@ def vis_validation(*, t, x, y, phi_net, h_net, idx_adapt_start, idx_adapt_end, i
     # axis_range = [-60, 30]
 
     fig, axs = plt.subplots(4, 3, figsize=(15,12))
+
 
     row = 0
     col = 0

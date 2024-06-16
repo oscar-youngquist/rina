@@ -64,13 +64,33 @@ def objective(options):
     
     return results_dict
 
-search_space = {"learning_rate": tune.loguniform(5e-6, 1e-2),
-                "alpha": tune.uniform(0.01, 0.25),
-                "gamma": tune.choice([10, 20]),
-                "SN":    tune.choice([1, 2, 4, 6])}
+# round 1
+# search_space = {"learning_rate": tune.loguniform(5e-6, 1e-2),
+#                 "alpha": tune.uniform(0.01, 0.25),
+#                 "gamma": tune.choice([10, 20]),
+#                 "SN":    tune.choice([1, 2, 4, 6])}
+
+# # round 2 fixing SN amd gamma
+# search_space = {"learning_rate": tune.loguniform(5e-6, 5e-3),
+#                 "alpha": tune.uniform(0.01, 0.20),
+#                 "phi_first_out": tune.choice([30, 40, 50, 60, 70, 80]),
+#                 "phi_second_out": tune.choice([40, 50, 60, 70, 80, 90]),
+#                 "discrim_hidden": tune.choice([10, 20, 30, 40, 50]),
+#                 "dim_a": tune.choice([3,4,5,6])}
+
+# round 3 doing everything a large number of times
+search_space = {"learning_rate": tune.loguniform(5e-6, 5e-3),
+                "alpha": tune.uniform(0.01, 0.20),
+                "phi_first_out": tune.choice([30, 40, 50, 60, 70, 80, 90, 100, 128, 256]),
+                "phi_second_out": tune.choice([40, 50, 60, 70, 80, 90, 100, 128, 256]),
+                "discrim_hidden": tune.choice([10, 20, 30, 40, 50, 60, 80, 128]),
+                "dim_a":  tune.choice([6,8,10,12,14,16]),
+                "gamma":  tune.choice([10, 20]),
+                "SN":     tune.choice([2,4,6,8]),
+                "K_shot": tune.choice([32, 50])}
 
 algo = OptunaSearch()
-algo = ConcurrencyLimiter(algo, max_concurrent=10)
+algo = ConcurrencyLimiter(algo, max_concurrent=4)
 
 def tune_RINA(num_samples):
     
@@ -89,9 +109,9 @@ def tune_RINA(num_samples):
     options["gamma"]           = 10    # max 2-norm of a
     options['alpha']           = 0.01  # adversarial regularization loss weight
     options['frequency_h']     = 2.    # discriminator update frequency
-    options['SN']              = 2     # maximum single-layer spectral norm of phi
-    options['train_path']      = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/training_data/'
-    options['test_path']       = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/eval_data/'
+    options['SN']              = 4     # maximum single-layer spectral norm of phi UPDATE - upped to 4 based on initial raytune run
+    options['train_path']      = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/training_data_ex/'
+    options['test_path']       = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/eval_data_ex/'
     options["body_offset"]     = 0
     options['shuffle']         = True
     options['K_shot']          = 32 # number of K-shot for least square on a
@@ -122,18 +142,19 @@ def tune_RINA(num_samples):
 
         cwd = '/home/oyoungquist/Research/RINA/rina'
 
-        output_path_base = os.path.join(cwd, "training_results", "raytune_initial", date_time)
+        output_path_base = os.path.join(cwd, "training_results", "raytune_3rd_rnd", date_time)
 
         if not os.path.exists(output_path_base):
             os.makedirs(output_path_base)
 
         return output_path_base
             
-    scheduler = ASHAScheduler(max_t=1, grace_period=1, reduction_factor=2)
-    trainable_with_gpu = tune.with_resources(train_rina, {"gpu": 1, "cpu":32})
+    scheduler = ASHAScheduler()
+    trainable_with_gpu = tune.with_resources(train_rina, {"cpu":16})
     
     tuner = tune.Tuner(
         trainable_with_gpu,
+        # train_rina,
         tune_config=tune.TuneConfig(
             metric="phi_loss",
             mode="min",
@@ -148,7 +169,7 @@ def tune_RINA(num_samples):
 
 
 if __name__ == '__main__':
-    results = tune_RINA(num_samples=100)
+    results = tune_RINA(num_samples=1000)
     best_result = results.get_best_result("phi_loss", "min")
 
     print("Best trial config: {}".format(best_result.config))
@@ -157,4 +178,4 @@ if __name__ == '__main__':
     # Get a dataframe for the last reported results of all of the trials
 
     df = results.get_dataframe()
-    df.to_csv("/home/oyoungquist/Research/RINA/rina/raytune_df.csv") 
+    df.to_csv("/home/oyoungquist/Research/RINA/rina/raytune_df_2nd_rnd.csv") 
