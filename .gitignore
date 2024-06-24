@@ -80,4 +80,5 @@ independent/CasadiTrajOpt/solver.out
 simulator/unity_Visualization/UserSettings/*
 Systems/loco-jump/machinelearning/pybind11
 Systems/loco-jump/machinelearning/lgos
+data/*
 
