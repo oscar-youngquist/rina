@@ -26,6 +26,9 @@ def run_training_loop(options):
     # save out the config path
     model_trainer.save_config(config_output_path)
 
+    # save out plots of training/testing data
+    model_trainer.save_data_plots()
+
     # train the model
     model_trainer.train_model()
 
@@ -38,7 +41,7 @@ def run_training_loop(options):
                                                                          eval_test_data_images_output_path,
                                                                          eval_test_data_text_output_file)
     
-    scripted_model_name = 'model_cmd_res_ex_a{:d}_{:d}_{:d}_h{:d}_e{:d}'.format(options['dim_a'],options['phi_first_out'],options['phi_second_out'],options['discrim_hidden'],options['num_epochs'])
+    scripted_model_name = 'model_cmd_res_ex_a{:d}_{:d}_{:d}_h{:d}_e{:d}.pt'.format(options['dim_a'],options['phi_first_out'],options['phi_second_out'],options['discrim_hidden'],options['num_epochs'])
     scripted_model_path = os.path.join(options['output_path'], scripted_model_name)
     
     model_trainer.save_scripted_model(scripted_model_path)
@@ -68,24 +71,20 @@ def build_output_path(options):
 #        'body_ang_acc', 'q', 'q_dot', 'q_ddot_est', 'q_ddot_m', 'tau',
 #        'tau_cmd', 'fr_cmd', 'contact_m', 'fr_contact', 'tau_residual_m',
 #        'tau_residual_full', 'tau_residual_cmd_centered', 'body_rpy', 'body_rp',
-#        'body_rp_dot', 'steps'],
+#        'body_rp_dot', 'steps', 'tau_residual_cmd'],
 #       dtype='object')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="RINA")
     
-    # ['body_rp','q','body_rp_dot','q_dot','fr_contact','tau_cmd']
-
-    parser.add_argument('--features', nargs="+", type=str, 
-                        default=['q', 'q_dot', 'tau_cmd'], 
-                        help='Values used an input data (default: [q,q_dot,tau_cmd])')
-    parser.add_argument('--label', type=str, default='tau_residual_cmd', help='Name of training lable (target)')
-    parser.add_argument('--dim-a', type=int, default=16, help='Number of basis-functions')
     parser.add_argument('--train-path', type=str, 
                         default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data/', 
                         help='Path to training data')
+    # parser.add_argument('--test-path', type=str, 
+    #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data/', 
+    #                     help='Path to eval data')
     parser.add_argument('--test-path', type=str, 
-                        default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data/', 
+                        default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data/', 
                         help='Path to eval data')
     parser.add_argument('--num-epochs', type=int, default=10000, help='Number of epochs to train (default: 10000)')
     parser.add_argument('--learning-rate', type=float, default=0.0009, help='Learning rate (default: 0.0009)')
@@ -104,6 +103,12 @@ if __name__ == '__main__':
     parser.add_argument('--device', type=str, default='cuda:0', help='Training device (default: cuda:0)')
 
 
+    # ['body_rp','q','body_rp_dot','q_dot','fr_contact','tau_cmd']
+    parser.add_argument('--features', nargs="+", type=str, 
+                        default=['q', 'q_dot', 'tau_cmd'], 
+                        help='Values used an input data (default: [q,q_dot,tau_cmd])')
+    parser.add_argument('--label', type=str, default='tau_residual_cmd', help='Name of training lable (target)')
+    parser.add_argument('--dim-a', type=int, default=16, help='Number of basis-functions')
     parser.add_argument('--output-prefix', type=str, default='', help='Prefix for output folder (default: '')')
 
 
@@ -135,7 +140,7 @@ if __name__ == '__main__':
     options['phi_first_out'] = 128
     options['phi_second_out'] = 128
     options['discrim_hidden'] = 20
-    options['display_progress'] = 20
+    options['display_progress'] = True
 
     # find keys we need to copy out of args
     args_dict = vars(args)
@@ -154,3 +159,6 @@ if __name__ == '__main__':
     run_training_loop(options)
 
 
+
+
+# /work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data

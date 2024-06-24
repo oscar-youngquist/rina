@@ -12,6 +12,7 @@ import argparse
 from datetime import datetime
 import re
 
+# function used to do whatever training/eval you want....
 def objective(options):  
     # create a few output_paths
     eval_adapt_start = 0
@@ -62,8 +63,11 @@ def objective(options):
 
     results_dict["folder"] = options["output_path"].split("/")[-1]
     
+    # return the metrics that you want Raytune to track
     return results_dict
 
+
+# Define the search space
 # round 1
 # search_space = {"learning_rate": tune.loguniform(5e-6, 1e-2),
 #                 "alpha": tune.uniform(0.01, 0.25),
@@ -89,7 +93,9 @@ search_space = {"learning_rate": tune.loguniform(5e-6, 5e-3),
                 "SN":     tune.choice([2,4,6,8]),
                 "K_shot": tune.choice([32, 50])}
 
+# create the search algorithm we will use
 algo = OptunaSearch()
+# limit the number of threads that can be run in parallel
 algo = ConcurrencyLimiter(algo, max_concurrent=4)
 
 def tune_RINA(num_samples):
@@ -118,6 +124,8 @@ def tune_RINA(num_samples):
     options['phi_shot']        = 256 # batch size for training phi
     options['loss_type']       = 'crossentropy-loss'
     
+    # function used to set up the objective function call
+    #     passed to the search algorithm
     def train_rina(config):
         # find keys we need to copy out of args
         config_keys = list(config.keys())
@@ -150,6 +158,9 @@ def tune_RINA(num_samples):
         return output_path_base
             
     scheduler = ASHAScheduler()
+
+    # this limits the number of resources that each config can use while training
+    #     you can also configure GPU usage through this command
     trainable_with_gpu = tune.with_resources(train_rina, {"cpu":16})
     
     tuner = tune.Tuner(

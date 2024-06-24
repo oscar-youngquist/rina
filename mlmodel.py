@@ -191,6 +191,9 @@ def validation(phi_net, h_net, adaptinput: np.ndarray, adaptlabel: np.ndarray, v
     adaptinput: K x dim_x numpy, adaptlabel: K x dim_y numpy, valinput: B x dim_x numpy
     output: K x dim_y numpy, B x dim_y numpy, dim_a x dim_y numpy, B x dim_c numpy
     """
+    phi_net.to(options['device'])
+    h_net.to(options['device'])
+    
     with torch.no_grad():       
         # Perform least squares on the adaptation set to get a
         X = torch.from_numpy(adaptinput).to(options['device']) # K x dim_x

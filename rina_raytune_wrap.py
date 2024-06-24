@@ -49,6 +49,7 @@ class RINA_Tune():
 
         RawData = utils.load_data(self.train_data_path)
         Data = utils.format_data(RawData, features=self.features, output=self.label, body_offset=options["body_offset"])
+        self.Data = Data
 
         RawDataTest = utils.load_data(self.test_data_path) # expnames='(baseline_)([0-9]*|no)wind'
         self.TestData = utils.format_data(RawDataTest, features=self.features, output=self.label, body_offset=options["body_offset"])
@@ -112,6 +113,23 @@ class RINA_Tune():
         with open(output_path, "w+") as f:
             json.dump(self.options, f)
             f.close()
+
+
+    def save_data_plots(self):
+        training_data_images = os.path.join(self.output_path_base, "training_data_images")
+        test_data_images = os.path.join(self.output_path_base, "test_data_images")
+
+        if not os.path.exists(training_data_images):
+            os.makedirs(training_data_images)
+
+        if not os.path.exists(test_data_images):
+            os.makedirs(test_data_images)
+
+        for data in self.Data:
+            utils.plot_subdataset(data, self.features, self.labels, os.path.join(training_data_images, "{:s}.png".format(data.meta['condition'])), title_prefix="(Training data)")
+
+        for data in self.TestData:
+            utils.plot_subdataset(data, self.features, self.labels, os.path.join(test_data_images, "{:s}.png".format(data.meta['condition'])), title_prefix="(Testing Data)")
 
     
     def train_model(self):
@@ -192,6 +210,7 @@ class RINA_Tune():
                 '''
                 Spectral normalization
                 '''
+                self.phi_net.cpu()
                 if self.sn > 0:
                     for param in self.phi_net.parameters():
                         M = param.detach().numpy()
@@ -202,6 +221,8 @@ class RINA_Tune():
                 
                 running_loss_f += loss_f.item()
                 running_loss_c += loss_c.item()
+
+                self.phi_net.to(self.device)
 
                 # push data back to cpu
                 inputs.to('cpu')
