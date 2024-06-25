@@ -94,7 +94,6 @@ if __name__ == '__main__':
 
     parser.add_argument('--num-epochs', type=int, default=10000, help='Number of epochs to train (default: 10000)')
     parser.add_argument('--learning-rate', type=float, default=0.0009, help='Learning rate (default: 0.0009)')
-    parser.add_argument('--shuffle', type=bool, default=True, help='Shuffle training data (default: True)')
     parser.add_argument('--model-save-freq', type=int, default=100, help='Number of epochs between model saves (default: 100)')
     parser.add_argument('--SN', type=float, default=6.0, help='Max single-layer spectural norm (default: 6.0)')
     parser.add_argument('--gamma', type=float, default=10, help='Max magnitude of a (default: 10.0)')
@@ -105,9 +104,22 @@ if __name__ == '__main__':
     parser.add_argument('--discrim-hidden', type=int, default=64, help='Hidden layer size for discriminator (default: 64)')
     parser.add_argument('--K-shot', type=int, default=50, help='Hidden layer size for discriminator (default: 64)')
     parser.add_argument('--phi-shot', type=int, default=2048, help='Training batch-size (default: 64)')
-    parser.add_argument('--display-progress', type=bool, default=True, help='Print out progress (default: True)')
     parser.add_argument('--device', type=str, default='cuda:0', help='Training device (default: cuda:0)')
     parser.add_argument('--save-data-plots', type=bool, default=True, help='Save out plots highlighting training data (default: True)')
+
+    parser.add_argument('--shuffle', action="store_true", help='Shuffle training data (default: True)')
+    parser.add_argument('--no-shuffle', dest="shuffle", action="store_false")
+    
+    parser.add_argument('--save-data-plots', action='store_true', help='Save out plots highlighting training data (default: True)')
+    parser.add_argument('--no-save-data-plots', dest='save_data_plots', action='store_false')
+    
+    parser.add_argument('--display-progress', action="store_true", help='Print out progress (default: True)')
+    parser.add_argument('--no-display-progress', dest="display_progress", action="store_false")
+
+
+    parser.set_defaults(shuffle=True)
+    parser.set_defaults(save_data_plots=True)
+    parser.set_defaults(display_progress=True)
 
 
     # ['body_rp','q','body_rp_dot','q_dot','fr_contact','tau_cmd']
@@ -153,19 +165,33 @@ if __name__ == '__main__':
     args_dict = vars(args)
     config_keys = args_dict.keys()
 
+    print(args_dict)
+    print("\n\n")
+    print(options)
+
     # print(config_keys)
 
     for key in config_keys:
         options[key] = args_dict[key]
 
+    print(options)
+
     # build the output path
     build_output_path(options)
 
-    print(options["output_path"])
+    # print(options.keys())
+
+    # print(options["output_path"])
+
+    # print(options['features'])
 
     run_training_loop(options)
 
 
+# body_rp q body_rp_dot q_dot fr_contact tau_cmd
+
 
 
 # /work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data
+
+
