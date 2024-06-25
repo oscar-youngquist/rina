@@ -126,7 +126,7 @@ def plot_subdataset(data, features, labels, output_path, title_prefix=''):
         # reset the row counter for each feature
         row = 0
 
-    axis_range = [-30, 30]
+    axis_range = [-50, 30]
     row = 0
     idx = 0
     for j , label in enumerate(labels):

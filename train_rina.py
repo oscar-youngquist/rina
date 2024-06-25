@@ -27,7 +27,8 @@ def run_training_loop(options):
     model_trainer.save_config(config_output_path)
 
     # save out plots of training/testing data
-    model_trainer.save_data_plots()
+    if options['save_data_plots'] == True:
+        model_trainer.save_data_plots()
 
     # train the model
     model_trainer.train_model()
@@ -77,15 +78,20 @@ def build_output_path(options):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="RINA")
     
-    parser.add_argument('--train-path', type=str, 
-                        default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data/', 
-                        help='Path to training data')
+    # parser.add_argument('--train-path', type=str, 
+    #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data/', 
+    #                     help='Path to training data')
     # parser.add_argument('--test-path', type=str, 
     #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data/', 
     #                     help='Path to eval data')
+
+    parser.add_argument('--train-path', type=str, 
+                        default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data/', 
+                        help='Path to training data')
     parser.add_argument('--test-path', type=str, 
-                        default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data/', 
+                        default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data/', 
                         help='Path to eval data')
+
     parser.add_argument('--num-epochs', type=int, default=10000, help='Number of epochs to train (default: 10000)')
     parser.add_argument('--learning-rate', type=float, default=0.0009, help='Learning rate (default: 0.0009)')
     parser.add_argument('--shuffle', type=bool, default=True, help='Shuffle training data (default: True)')
@@ -101,6 +107,7 @@ if __name__ == '__main__':
     parser.add_argument('--phi-shot', type=int, default=2048, help='Training batch-size (default: 64)')
     parser.add_argument('--display-progress', type=bool, default=True, help='Print out progress (default: True)')
     parser.add_argument('--device', type=str, default='cuda:0', help='Training device (default: cuda:0)')
+    parser.add_argument('--save-data-plots', type=bool, default=True, help='Save out plots highlighting training data (default: True)')
 
 
     # ['body_rp','q','body_rp_dot','q_dot','fr_contact','tau_cmd']
@@ -140,7 +147,7 @@ if __name__ == '__main__':
     options['phi_first_out'] = 128
     options['phi_second_out'] = 128
     options['discrim_hidden'] = 20
-    options['display_progress'] = True
+    options['display_progress'] = False
 
     # find keys we need to copy out of args
     args_dict = vars(args)
