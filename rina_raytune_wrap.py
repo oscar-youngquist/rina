@@ -42,11 +42,14 @@ class RINA_Tune():
         self.train_data_path = options['train_path']
         self.test_data_path = options['test_path']
         self.output_path_base = options['output_path']
+        self.device = options['device']
+        self.display_progress = options['display_progress']
         
         print("\n***********Model output path: ", self.output_path_base)
 
         RawData = utils.load_data(self.train_data_path)
         Data = utils.format_data(RawData, features=self.features, output=self.label, body_offset=options["body_offset"])
+        self.Data = Data
 
         RawDataTest = utils.load_data(self.test_data_path) # expnames='(baseline_)([0-9]*|no)wind'
         self.TestData = utils.format_data(RawDataTest, features=self.features, output=self.label, body_offset=options["body_offset"])
@@ -111,6 +114,23 @@ class RINA_Tune():
             json.dump(self.options, f)
             f.close()
 
+
+    def save_data_plots(self):
+        training_data_images = os.path.join(self.output_path_base, "training_data_images")
+        test_data_images = os.path.join(self.output_path_base, "test_data_images")
+
+        if not os.path.exists(training_data_images):
+            os.makedirs(training_data_images)
+
+        if not os.path.exists(test_data_images):
+            os.makedirs(test_data_images)
+
+        for data in self.Data:
+            utils.plot_subdataset(data, self.features, self.labels, os.path.join(training_data_images, "{:s}.png".format(data.meta['condition'])), title_prefix="(Training data)")
+
+        for data in self.TestData:
+            utils.plot_subdataset(data, self.features, self.labels, os.path.join(test_data_images, "{:s}.png".format(data.meta['condition'])), title_prefix="(Testing Data)")
+
     
     def train_model(self):
         # Iterate over the desired number of epochs
@@ -122,6 +142,9 @@ class RINA_Tune():
             # Running loss over all subdatasets
             running_loss_f = 0.0
             running_loss_c = 0.0
+
+            self.phi_net.to(self.device)
+            self.h_net.to(self.device)
 
             for i in arr:
                 kshot_data = None
@@ -137,8 +160,9 @@ class RINA_Tune():
                 '''
                 Least-square to get $a$ from K-shot data
                 '''
-                X = kshot_data['input'] # K x dim_x
-                Y = kshot_data['output'] # K x dim_y
+                # push data to device
+                X = kshot_data['input'].to(self.device) # K x dim_x
+                Y = kshot_data['output'].to(self.device) # K x dim_y
                 Phi = self.phi_net(X) # K x dim_a
                 Phi_T = Phi.transpose(0, 1) # dim_a x K
                 A = torch.inverse(torch.mm(Phi_T, Phi)) # dim_a x dim_a
@@ -146,13 +170,18 @@ class RINA_Tune():
                 if torch.norm(a, 'fro') > self.gamma:
                     a = a / torch.norm(a, 'fro') * self.gamma
 
+                # push data off of device
+                X.cpu()
+                Y.cpu()
+                A.cpu()
+                
                 '''
                 Batch training \phi_net
                 '''
-                inputs = data['input'] # B x dim_x
-                labels = data['output'] # B x dim_y
+                inputs = data['input'].to(self.device) # B x dim_x
+                labels = data['output'].to(self.device) # B x dim_y
                 
-                c_labels = data['c'].type(torch.long)
+                c_labels = data['c'].type(torch.long).to(self.device)
                     
                 # forward + backward + optimize
                 outputs = torch.mm(self.phi_net(inputs), a)
@@ -181,6 +210,7 @@ class RINA_Tune():
                 '''
                 Spectral normalization
                 '''
+                self.phi_net.cpu()
                 if self.sn > 0:
                     for param in self.phi_net.parameters():
                         M = param.detach().numpy()
@@ -191,12 +221,20 @@ class RINA_Tune():
                 
                 running_loss_f += loss_f.item()
                 running_loss_c += loss_c.item()
+
+                self.phi_net.to(self.device)
+
+                # push data back to cpu
+                inputs.to('cpu')
+                labels.to('cpu')
+                c_labels.to('cpu')
+                a.to('cpu')
             
             # Save statistics
             self.Loss_f.append(running_loss_f / self.num_train_classes)
             self.Loss_c.append(running_loss_c / self.num_train_classes)
-            # if epoch % 10 == 0:
-            #     print('[%d] loss_f: %.2f loss_c: %.2f' % (epoch + 1, running_loss_f / self.num_train_classes, running_loss_c / self.num_train_classes))
+            if epoch % 10 == 0 and self.display_progress:
+                print('[%d] loss_f: %.2f loss_c: %.2f' % (epoch + 1, running_loss_f / self.num_train_classes, running_loss_c / self.num_train_classes))
     
             with torch.no_grad():
                 for j in range(len(self.TestData)):
@@ -254,7 +292,6 @@ class RINA_Tune():
         fig.savefig(os.path.join(self.output_path_base, f'test_set_avg_loss.png'))
         plt.close(fig)
         
-
     def eval_model(self, eval_adapt_start, eval_adapt_end, eval_val_start, eval_val_end, output_path_ims, output_path_txt):
         for i, data in enumerate(self.TestData):
             # print('------------------------------')
@@ -291,4 +328,52 @@ class RINA_Tune():
             error_means.append(error_2)
             error_learned.append(error_3)
 
+        # tabluate the averages (and stddevs)
+        before_mean = np.mean(error_befores)
+        before_std  = np.std(error_befores)
+        mean_mean   = np.mean(error_means)
+        mean_std    = np.std(error_means)
+        phi_mean    = np.mean(error_learned)
+        phi_std     = np.std(error_learned)
+
+        print('**** overall averages ****\n')
+        print(f'Before learning - MSE asg: {before_mean: .2f}')
+        print(f'Before learning - MSE stddev: {before_std: .2f}')
+        print(f'Mean predictor - MSE avg: {mean_mean: .2f}')
+        print(f'Mean predictor - MSE stddev: {mean_std: .2f}')
+        print(f'After learning phi(x) - MSE avg: {phi_mean: .2f}')
+        print(f'After learning phi(x) - MSE stddev: {phi_std: .2f}')
+        print('')
+
+        with open(output_path_txt, "a+") as f:
+            f.write('**** overall averages ****\n')
+            f.write(f'Before learning - MSE asg: {before_mean: .2f}\n')
+            f.write(f'Before learning - MSE stddev: {before_std: .2f}\n')
+            f.write(f'Mean predictor - MSE avg: {mean_mean: .2f}\n')
+            f.write(f'Mean predictor - MSE stddev: {mean_std: .2f}\n')
+            f.write(f'After learning phi(x) - MSE avg: {phi_mean: .2f}\n')
+            f.write(f'After learning phi(x) - MSE stddev: {phi_std: .2f}\n')
+            f.write('\n')
+            f.close()
+
         return error_befores, error_means, error_learned
+    
+    def save_scripted_model(self, model_file_name):
+        self.phi_net.to('cpu')
+        final_model = self.phi_net.to('cpu')
+        final_model.options['device'] = 'cpu'
+
+        # convert the trained python model to a Torch.Script model
+        # An example input you would normally provide to your model's forward() method.
+        example = torch.rand(1, 36).to('cpu')
+
+        # Use torch.jit.trace to generate a torch.jit.ScriptModule via tracing.
+        traced_script_module = torch.jit.trace(final_model, example)
+
+        # Use torch.jit.trace to generate a torch.jit.ScriptModule via tracing.
+        traced_script_module = torch.jit.trace(final_model, example)
+
+        traced_script_module.cpu()
+
+        # save-out the scripted model
+        traced_script_module.save(os.path.join(self.output_path_base, model_file_name))

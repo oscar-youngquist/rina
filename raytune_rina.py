@@ -12,6 +12,7 @@ import argparse
 from datetime import datetime
 import re
 
+# function used to do whatever training/eval you want....
 def objective(options):  
     # create a few output_paths
     eval_adapt_start = 0
@@ -62,8 +63,11 @@ def objective(options):
 
     results_dict["folder"] = options["output_path"].split("/")[-1]
     
+    # return the metrics that you want Raytune to track
     return results_dict
 
+
+# Define the search space
 # round 1
 # search_space = {"learning_rate": tune.loguniform(5e-6, 1e-2),
 #                 "alpha": tune.uniform(0.01, 0.25),
@@ -81,15 +85,16 @@ def objective(options):
 # round 3 doing everything a large number of times
 search_space = {"learning_rate": tune.loguniform(5e-6, 5e-3),
                 "alpha": tune.uniform(0.01, 0.20),
-                "phi_first_out": tune.choice([30, 40, 50, 60, 70, 80, 90, 100, 128, 256]),
-                "phi_second_out": tune.choice([40, 50, 60, 70, 80, 90, 100, 128, 256]),
-                "discrim_hidden": tune.choice([10, 20, 30, 40, 50, 60, 80, 128]),
+                "phi_first_out": tune.choice([70, 80, 90, 100, 128]),
+                "phi_second_out": tune.choice([70, 80, 90, 100, 128]),
+                "discrim_hidden": tune.choice([20, 30, 40, 50, 60, 80, 100, 128]),
                 "dim_a":  tune.choice([6,8,10,12,14,16]),
                 "gamma":  tune.choice([10, 20]),
-                "SN":     tune.choice([2,4,6,8]),
-                "K_shot": tune.choice([32, 50])}
+                "SN":     tune.choice([2,4,6,8])}
 
+# create the search algorithm we will use
 algo = OptunaSearch()
+# limit the number of threads that can be run in parallel
 algo = ConcurrencyLimiter(algo, max_concurrent=4)
 
 def tune_RINA(num_samples):
@@ -97,27 +102,31 @@ def tune_RINA(num_samples):
     options = {}
     
     # fill in the default values...
-    options["dim_a"]           = 3
-    options["features"]        = ['q', 'q_dot', 'tau_cmd']
-    options["label"]           = 'tau_residual_cmd'
-    options["labels"]          = ["FR_hip", "FR_knee", "FR_foot", "FL_hip", "FL_knee", "FL_foot",
-                                  "RR_hip", "RR_knee", "RR_foot", "RL_hip", "RL_knee", "RL_foot"]
-    options["dataset"]         = 'rina'
-    options["learning_rate"]   = 5e-4
-    options["model_save_freq"] = 100
-    options['num_epochs']      = 500
-    options["gamma"]           = 10    # max 2-norm of a
-    options['alpha']           = 0.01  # adversarial regularization loss weight
-    options['frequency_h']     = 2.    # discriminator update frequency
-    options['SN']              = 4     # maximum single-layer spectral norm of phi UPDATE - upped to 4 based on initial raytune run
-    options['train_path']      = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/training_data_ex/'
-    options['test_path']       = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/eval_data_ex/'
-    options["body_offset"]     = 0
-    options['shuffle']         = True
-    options['K_shot']          = 32 # number of K-shot for least square on a
-    options['phi_shot']        = 256 # batch size for training phi
-    options['loss_type']       = 'crossentropy-loss'
+    options["dim_a"]            = 3
+    options["features"]         = ['q', 'q_dot', 'tau_cmd']
+    options["label"]            = 'tau_residual_cmd'
+    options["labels"]           = ["FR_hip", "FR_knee", "FR_foot", "FL_hip", "FL_knee", "FL_foot",
+                                   "RR_hip", "RR_knee", "RR_foot", "RL_hip", "RL_knee", "RL_foot"]
+    options["dataset"]          = 'rina'
+    options["learning_rate"]    = 5e-4
+    options["model_save_freq"]  = 100
+    options['num_epochs']       = 500
+    options["gamma"]            = 10    # max 2-norm of a
+    options['alpha']            = 0.01  # adversarial regularization loss weight
+    options['frequency_h']      = 2.    # discriminator update frequency
+    options['SN']               = 4     # maximum single-layer spectral norm of phi UPDATE - upped to 4 based on initial raytune run
+    options['train_path']       = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/training_data_ex/'
+    options['test_path']        = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/eval_data_ex/'
+    options["body_offset"]      = 0
+    options['shuffle']          = True
+    options['K_shot']           = 50 # number of K-shot for least square on a
+    options['phi_shot']         = 256 # batch size for training phi
+    options['loss_type']        = 'crossentropy-loss'
+    options['display_progress'] = False
+    options['device']           = 'cuda'
     
+    # function used to set up the objective function call
+    #     passed to the search algorithm
     def train_rina(config):
         # find keys we need to copy out of args
         config_keys = list(config.keys())
@@ -140,9 +149,9 @@ def tune_RINA(num_samples):
 
         date_time += "_cmd_residual"
 
-        cwd = '/home/oyoungquist/Research/RINA/rina'
+        cwd = os.getcwd()
 
-        output_path_base = os.path.join(cwd, "training_results", "raytune_3rd_rnd", date_time)
+        output_path_base = os.path.join(cwd, "training_results", "raytune", date_time)
 
         if not os.path.exists(output_path_base):
             os.makedirs(output_path_base)
@@ -150,7 +159,10 @@ def tune_RINA(num_samples):
         return output_path_base
             
     scheduler = ASHAScheduler()
-    trainable_with_gpu = tune.with_resources(train_rina, {"cpu":16})
+
+    # this limits the number of resources that each config can use while training
+    #     you can also configure GPU usage through this command
+    trainable_with_gpu = tune.with_resources(train_rina, {"gpu":1})
     
     tuner = tune.Tuner(
         trainable_with_gpu,
@@ -169,7 +181,7 @@ def tune_RINA(num_samples):
 
 
 if __name__ == '__main__':
-    results = tune_RINA(num_samples=1000)
+    results = tune_RINA(num_samples=200)
     best_result = results.get_best_result("phi_loss", "min")
 
     print("Best trial config: {}".format(best_result.config))
@@ -178,4 +190,4 @@ if __name__ == '__main__':
     # Get a dataframe for the last reported results of all of the trials
 
     df = results.get_dataframe()
-    df.to_csv("/home/oyoungquist/Research/RINA/rina/raytune_df_2nd_rnd.csv") 
+    df.to_csv("/home/oyoungquist/Research/RINA/rina/raytune_df_gpu_debug.csv") 
