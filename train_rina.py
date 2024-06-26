@@ -193,4 +193,4 @@ if __name__ == '__main__':
 
 # /work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data
 
-
+# python3 train_rina.py --output-prefix cmd_residual_centered_c --num-epochs 10000 --label tau_residual_cmd_centered --discrim-hidden 20 --device cuda:0 --phi-shot 2048
