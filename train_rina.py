@@ -78,19 +78,19 @@ def build_output_path(options):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="RINA")
     
-    # parser.add_argument('--train-path', type=str, 
-    #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data/', 
-    #                     help='Path to training data')
-    # parser.add_argument('--test-path', type=str, 
-    #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data/', 
-    #                     help='Path to eval data')
-
     parser.add_argument('--train-path', type=str, 
-                        default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data/', 
+                        default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data_corrected/', 
                         help='Path to training data')
     parser.add_argument('--test-path', type=str, 
-                        default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data/', 
+                        default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 
                         help='Path to eval data')
+
+    # parser.add_argument('--train-path', type=str, 
+    #                     default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data/', 
+    #                     help='Path to training data')
+    # parser.add_argument('--test-path', type=str, 
+    #                     default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data/', 
+    #                     help='Path to eval data')
 
     parser.add_argument('--num-epochs', type=int, default=10000, help='Number of epochs to train (default: 10000)')
     parser.add_argument('--learning-rate', type=float, default=0.0009, help='Learning rate (default: 0.0009)')
@@ -105,7 +105,6 @@ if __name__ == '__main__':
     parser.add_argument('--K-shot', type=int, default=50, help='Hidden layer size for discriminator (default: 64)')
     parser.add_argument('--phi-shot', type=int, default=2048, help='Training batch-size (default: 64)')
     parser.add_argument('--device', type=str, default='cuda:0', help='Training device (default: cuda:0)')
-    parser.add_argument('--save-data-plots', type=bool, default=True, help='Save out plots highlighting training data (default: True)')
 
     parser.add_argument('--shuffle', action="store_true", help='Shuffle training data (default: True)')
     parser.add_argument('--no-shuffle', dest="shuffle", action="store_false")
