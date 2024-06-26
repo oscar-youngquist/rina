@@ -78,19 +78,19 @@ def build_output_path(options):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="RINA")
     
-    parser.add_argument('--train-path', type=str, 
-                        default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data_corrected/', 
-                        help='Path to training data')
-    parser.add_argument('--test-path', type=str, 
-                        default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 
-                        help='Path to eval data')
-
     # parser.add_argument('--train-path', type=str, 
-    #                     default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data/', 
+    #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data_corrected/', 
     #                     help='Path to training data')
     # parser.add_argument('--test-path', type=str, 
-    #                     default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data/', 
+    #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 
     #                     help='Path to eval data')
+
+    parser.add_argument('--train-path', type=str, 
+                        default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data_corrected/', 
+                        help='Path to training data')
+    parser.add_argument('--test-path', type=str, 
+                        default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data_corrected/', 
+                        help='Path to eval data')
 
     parser.add_argument('--num-epochs', type=int, default=10000, help='Number of epochs to train (default: 10000)')
     parser.add_argument('--learning-rate', type=float, default=0.0009, help='Learning rate (default: 0.0009)')

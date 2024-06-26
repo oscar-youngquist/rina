@@ -97,7 +97,7 @@ algo = OptunaSearch()
 # limit the number of threads that can be run in parallel
 algo = ConcurrencyLimiter(algo, max_concurrent=4)
 
-def tune_RINA(num_samples):
+def tune_RINA(num_samples, prefix, config_dict):
     
     options = {}
     
@@ -115,8 +115,10 @@ def tune_RINA(num_samples):
     options['alpha']            = 0.01  # adversarial regularization loss weight
     options['frequency_h']      = 2.    # discriminator update frequency
     options['SN']               = 4     # maximum single-layer spectral norm of phi UPDATE - upped to 4 based on initial raytune run
-    options['train_path']       = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/training_data_ex/'
-    options['test_path']        = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/eval_data_ex/'
+    # options['train_path']       = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/training_data_ex/'
+    # options['test_path']        = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/eval_data_ex/'
+    options['train_path']       = '/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data_corrected/'
+    options['test_path']        = '/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data_corrected/'
     options["body_offset"]      = 0
     options['shuffle']          = True
     options['K_shot']           = 50 # number of K-shot for least square on a
@@ -124,6 +126,11 @@ def tune_RINA(num_samples):
     options['loss_type']        = 'crossentropy-loss'
     options['display_progress'] = False
     options['device']           = 'cuda'
+
+    for key in config_dict.keys():
+
+        if key in options.keys():
+            options[key] = config_dict[key]
     
     # function used to set up the objective function call
     #     passed to the search algorithm
@@ -135,23 +142,23 @@ def tune_RINA(num_samples):
             options[key] = config[key]
 
         # grab the output_path
-        output_path_base = build_output_path()
+        output_path_base = build_output_path(prefix, options)
         options['output_path'] = output_path_base
         
         # call the objective function
         return objective(options)
     
 
-    def build_output_path():
+    def build_output_path(prefix, options):
         now = datetime.now() # current date and time
         date_time = now.strftime("%m/%d/%Y%H:%M:%S")
         date_time = re.sub('[^0-9a-zA-Z]+', '_', date_time)
 
-        date_time += "_cmd_residual"
+        date_time += "_cmd_res_ex_{:d}_{:d}_a{:d}_h{:d}_e{:d}".format(options['phi_first_out'],options['phi_second_out'],options['dim_a'],options['discrim_hidden'],options['num_epochs'])
 
-        cwd = os.getcwd()
+        cwd = "/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/"
 
-        output_path_base = os.path.join(cwd, "training_results", "raytune", date_time)
+        output_path_base = os.path.join(cwd, "training_results", prefix, date_time)
 
         if not os.path.exists(output_path_base):
             os.makedirs(output_path_base)
@@ -162,7 +169,7 @@ def tune_RINA(num_samples):
 
     # this limits the number of resources that each config can use while training
     #     you can also configure GPU usage through this command
-    trainable_with_gpu = tune.with_resources(train_rina, {"gpu":1})
+    trainable_with_gpu = tune.with_resources(train_rina, {"cpu":2, "gpu":0.1})
     
     tuner = tune.Tuner(
         trainable_with_gpu,
@@ -181,7 +188,20 @@ def tune_RINA(num_samples):
 
 
 if __name__ == '__main__':
-    results = tune_RINA(num_samples=200)
+    parser = argparse.ArgumentParser(description="RINA")
+    parser.add_argument('--prefix', type=str, default='', help='Prefix for training results (default: '')')
+    # ['body_rp','q','body_rp_dot','q_dot','fr_contact','tau_cmd']
+    parser.add_argument('--features', nargs="+", type=str, 
+                        default=['q', 'q_dot', 'tau_cmd'], 
+                        help='Values used an input data (default: [q,q_dot,tau_cmd])')
+    parser.add_argument('--label', type=str, default='tau_residual_cmd', help='Name of training lable (target)')
+    
+    args = parser.parse_args()
+    prefix = args.prefix
+
+    config_dict = vars(args)
+
+    results = tune_RINA(250, prefix, config_dict)
     best_result = results.get_best_result("phi_loss", "min")
 
     print("Best trial config: {}".format(best_result.config))
@@ -189,5 +209,7 @@ if __name__ == '__main__':
 
     # Get a dataframe for the last reported results of all of the trials
 
+
+
     df = results.get_dataframe()
-    df.to_csv("/home/oyoungquist/Research/RINA/rina/raytune_df_gpu_debug.csv") 
+    df.to_csv("/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/{:s}_df_results.csv".format(prefix)) 
