@@ -95,7 +95,7 @@ search_space = {"learning_rate": tune.loguniform(5e-6, 5e-3),
 # create the search algorithm we will use
 algo = OptunaSearch()
 # limit the number of threads that can be run in parallel
-algo = ConcurrencyLimiter(algo, max_concurrent=4)
+# algo = ConcurrencyLimiter(algo, max_concurrent=4)
 
 def tune_RINA(num_samples, prefix, config_dict):
     
@@ -115,10 +115,10 @@ def tune_RINA(num_samples, prefix, config_dict):
     options['alpha']            = 0.01  # adversarial regularization loss weight
     options['frequency_h']      = 2.    # discriminator update frequency
     options['SN']               = 4     # maximum single-layer spectral norm of phi UPDATE - upped to 4 based on initial raytune run
-    # options['train_path']       = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/training_data_ex/'
-    # options['test_path']        = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/eval_data_ex/'
-    options['train_path']       = '/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data_corrected/'
-    options['test_path']        = '/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data_corrected/'
+    options['train_path']       = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/training_data_corrected/'
+    options['test_path']        = '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/eval_data_corrected/'
+    # options['train_path']       = '/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data_corrected/'
+    # options['test_path']        = '/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data_corrected/'
     options["body_offset"]      = 0
     options['shuffle']          = True
     options['K_shot']           = 50 # number of K-shot for least square on a
@@ -156,7 +156,7 @@ def tune_RINA(num_samples, prefix, config_dict):
 
         date_time += "_cmd_res_ex_{:d}_{:d}_a{:d}_h{:d}_e{:d}".format(options['phi_first_out'],options['phi_second_out'],options['dim_a'],options['discrim_hidden'],options['num_epochs'])
 
-        cwd = "/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/"
+        cwd = "/home/oyoungquist/Research/RINA/rina/"
 
         output_path_base = os.path.join(cwd, "training_results", prefix, date_time)
 
@@ -169,7 +169,7 @@ def tune_RINA(num_samples, prefix, config_dict):
 
     # this limits the number of resources that each config can use while training
     #     you can also configure GPU usage through this command
-    trainable_with_gpu = tune.with_resources(train_rina, {"cpu":2, "gpu":0.1})
+    trainable_with_gpu = tune.with_resources(train_rina, {"cpu":2, "gpu":0.0625})
     
     tuner = tune.Tuner(
         trainable_with_gpu,
@@ -190,18 +190,22 @@ def tune_RINA(num_samples, prefix, config_dict):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="RINA")
     parser.add_argument('--prefix', type=str, default='', help='Prefix for training results (default: '')')
+    parser.add_argument('--df-prefix', type=str, default='raytune_df', help='Prefix for training results (default: '')')
     # ['body_rp','q','body_rp_dot','q_dot','fr_contact','tau_cmd']
     parser.add_argument('--features', nargs="+", type=str, 
                         default=['q', 'q_dot', 'tau_cmd'], 
                         help='Values used an input data (default: [q,q_dot,tau_cmd])')
     parser.add_argument('--label', type=str, default='tau_residual_cmd', help='Name of training lable (target)')
+    parser.add_argument('--num-samples', type=int, default=250, help='Number of sample configs (default: 250)')
     
     args = parser.parse_args()
     prefix = args.prefix
+    df_prefix = args.df_prefix
+    num_samples = args.num_samples
 
     config_dict = vars(args)
 
-    results = tune_RINA(250, prefix, config_dict)
+    results = tune_RINA(num_samples, prefix, config_dict)
     best_result = results.get_best_result("phi_loss", "min")
 
     print("Best trial config: {}".format(best_result.config))
@@ -212,4 +216,4 @@ if __name__ == '__main__':
 
 
     df = results.get_dataframe()
-    df.to_csv("/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/{:s}_df_results.csv".format(prefix)) 
+    df.to_csv("/home/oyoungquist/Research/RINA/rina/{:s}_df_results.csv".format(df_prefix)) 
