@@ -53,7 +53,7 @@ def build_output_path(options):
     date_time = now.strftime("%m/%d/%Y%H:%M:%S")
     date_time = re.sub('[^0-9a-zA-Z]+', '_', date_time)
 
-    date_time += "_cmd_res_ex_{:d}_{:d}_a{:d}_h{:d}_e{:d}".format(options['phi_first_out'],options['phi_second_out'],options['dim_a'],options['discrim_hidden'],options['num_epochs'])
+    date_time += "_cmd_res_cc_{:d}_{:d}_a{:d}_h{:d}_e{:d}".format(options['phi_first_out'],options['phi_second_out'],options['dim_a'],options['discrim_hidden'],options['num_epochs'])
 
     cwd = os.getcwd()
 
@@ -84,19 +84,18 @@ if __name__ == '__main__':
     # parser.add_argument('--test-path', type=str, 
     #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 
     #                     help='Path to eval data')
-    # parser.add_argument('--train-path', type=str, 
-    #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/training_data_corrected/', 
-    #                     help='Path to training data')
-    # parser.add_argument('--test-path', type=str, 
-    #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 
-    #                     help='Path to eval data')
-
     parser.add_argument('--train-path', type=str, 
-                        default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data_corrected/', 
+                        default='/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/training_data_corrected/', 
                         help='Path to training data')
     parser.add_argument('--test-path', type=str, 
-                        default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data_corrected/', 
-                        help='Path to training data')
+                        default='/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 
+                        help='Path to eval data')
+    # parser.add_argument('--train-path', type=str, 
+    #                     default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data_corrected/', 
+    #                     help='Path to training data')
+    # parser.add_argument('--test-path', type=str, 
+    #                     default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data_corrected/', 
+    #                     help='Path to training data')
 
     parser.add_argument('--num-epochs', type=int, default=10000, help='Number of epochs to train (default: 10000)')
     parser.add_argument('--learning-rate', type=float, default=0.0009, help='Learning rate (default: 0.0009)')
@@ -199,4 +198,11 @@ if __name__ == '__main__':
 
 # /work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data
 
+# python3 train_rina.py --output-prefix cmd_residual_centered_c --num-epochs 10000 --label tau_residual_cmd_centered --discrim-hidden 128 --phi-first-out 256 --phi-second-out 256 --device cuda:0 --phi-shot 2048
+
+
 # python3 train_rina.py --output-prefix cmd_residual_centered_c --num-epochs 10000 --label tau_residual_cmd_centered --discrim-hidden 20 --device cuda:0 --phi-shot 2048
+
+# python3 train_rina.py --output-prefix cmd_residual_centered_c --num-epochs 10000 --label tau_residual_cmd_centered --discrim-hidden 128 --phi-first-out 80 --phi-second-out 128 --device cuda:0 --phi-shot 2048 --learning-rate 0.002318 --alpha 0.02474 --gamma 20 --SN 8 --dim-a 8
+
+# nohup python3 train_rina.py --output-prefix cmd_residual_centered_c --num-epochs 10000 --label tau_residual_cmd_centered --discrim-hidden 64 --phi-first-out 128 --phi-second-out 128 --device cuda:0 --phi-shot 2048 > bigger_hnet_fixed_arch_test.txt &

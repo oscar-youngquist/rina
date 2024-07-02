@@ -85,8 +85,8 @@ def objective(options):
 # round 3 doing everything a large number of times
 search_space = {"learning_rate": tune.loguniform(5e-6, 5e-3),
                 "alpha": tune.uniform(0.01, 0.20),
-                "phi_first_out": tune.choice([70, 80, 90, 100, 128]),
-                "phi_second_out": tune.choice([70, 80, 90, 100, 128]),
+                "phi_first_out": tune.choice([70, 80, 90, 100, 128, 256]),
+                "phi_second_out": tune.choice([70, 80, 90, 100, 128, 256]),
                 "discrim_hidden": tune.choice([20, 30, 40, 50, 60, 80, 100, 128]),
                 "dim_a":  tune.choice([6,8,10,12,14,16]),
                 "gamma":  tune.choice([10, 20]),

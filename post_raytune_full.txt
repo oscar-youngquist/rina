@@ -1,0 +1,1190 @@
+/home/oyoungquist/.conda/envs/rina/lib/python3.11/site-packages/torch/__init__.py:747: UserWarning: torch.set_default_tensor_type() is deprecated as of PyTorch 2.1, please use torch.set_default_dtype() and torch.set_default_device() as alternatives. (Triggered internally at /opt/conda/conda-bld/pytorch_1712608853085/work/torch/csrc/tensor/python_tensor.cpp:431.)
+  _C._set_default_tensor_type(t)
+{'train_path': '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/training_data_corrected/', 'test_path': '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 'num_epochs': 10000, 'learning_rate': 0.0009989, 'model_save_freq': 100, 'SN': 10.0, 'gamma': 5.0, 'alpha': 0.14688, 'frequency_h': 2.0, 'phi_first_out': 96, 'phi_second_out': 128, 'discrim_hidden': 80, 'K_shot': 50, 'phi_shot': 2048, 'device': 'cuda:0', 'shuffle': True, 'save_data_plots': True, 'display_progress': True, 'features': ['q', 'q_dot', 'tau_cmd'], 'label': 'tau_residual_cmd_centered', 'dim_a': 16, 'output_prefix': 'cmd_residual_centered_c'}
+
+
+
+{'dim_a': 16, 'features': ['q', 'q_dot', 'tau_cmd'], 'label': 'tau_residual_cmd', 'labels': ['FR_hip', 'FR_knee', 'FR_foot', 'FL_hip', 'FL_knee', 'FL_foot', 'RR_hip', 'RR_knee', 'RR_foot', 'RL_hip', 'RL_knee', 'RL_foot'], 'dataset': 'rina', 'learning_rate': 0.0005, 'model_save_freq': 100, 'num_epochs': 500, 'gamma': 10, 'alpha': 0.01, 'frequency_h': 2.0, 'SN': 4, 'train_path': '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/training_data_ex/', 'test_path': '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/05_17_2024_formal/eval_data_ex/', 'shuffle': True, 'body_offset': 0, 'K_shot': 32, 'phi_shot': 256, 'loss_type': 'crossentropy-loss', 'phi_first_out': 128, 'phi_second_out': 128, 'discrim_hidden': 20, 'display_progress': False}
+{'dim_a': 16, 'features': ['q', 'q_dot', 'tau_cmd'], 'label': 'tau_residual_cmd_centered', 'labels': ['FR_hip', 'FR_knee', 'FR_foot', 'FL_hip', 'FL_knee', 'FL_foot', 'RR_hip', 'RR_knee', 'RR_foot', 'RL_hip', 'RL_knee', 'RL_foot'], 'dataset': 'rina', 'learning_rate': 0.0009989, 'model_save_freq': 100, 'num_epochs': 10000, 'gamma': 5.0, 'alpha': 0.14688, 'frequency_h': 2.0, 'SN': 10.0, 'train_path': '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/training_data_corrected/', 'test_path': '/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 'shuffle': True, 'body_offset': 0, 'K_shot': 50, 'phi_shot': 2048, 'loss_type': 'crossentropy-loss', 'phi_first_out': 96, 'phi_second_out': 128, 'discrim_hidden': 80, 'display_progress': True, 'device': 'cuda:0', 'save_data_plots': True, 'output_prefix': 'cmd_residual_centered_c'}
+running on linux, setting 2 workers
+
+***********Model output path:  /home/oyoungquist/Research/RINA/rina/training_results/cmd_residual_centered_c/06_30_202421_14_28_cmd_res_cc_96_128_a16_h80_e10000
+[1] loss_f: 7.45 loss_c: 1.10
+[11] loss_f: 7.09 loss_c: 1.10
+[21] loss_f: 7.23 loss_c: 1.10
+[31] loss_f: 6.23 loss_c: 1.10
+[41] loss_f: 5.20 loss_c: 1.11
+[51] loss_f: 5.14 loss_c: 1.09
+[61] loss_f: 4.43 loss_c: 1.10
+[71] loss_f: 4.37 loss_c: 1.11
+[81] loss_f: 4.83 loss_c: 1.09
+[91] loss_f: 4.33 loss_c: 1.08
+[101] loss_f: 4.20 loss_c: 1.10
+[111] loss_f: 3.98 loss_c: 1.07
+[121] loss_f: 3.96 loss_c: 1.17
+[131] loss_f: 4.29 loss_c: 1.14
+[141] loss_f: 4.32 loss_c: 1.09
+[151] loss_f: 4.23 loss_c: 1.07
+[161] loss_f: 3.73 loss_c: 1.08
+[171] loss_f: 4.34 loss_c: 1.07
+[181] loss_f: 3.55 loss_c: 1.08
+[191] loss_f: 3.21 loss_c: 1.08
+[201] loss_f: 3.46 loss_c: 1.15
+[211] loss_f: 3.24 loss_c: 1.11
+[221] loss_f: 3.57 loss_c: 1.08
+[231] loss_f: 3.11 loss_c: 1.07
+[241] loss_f: 3.07 loss_c: 1.07
+[251] loss_f: 3.35 loss_c: 1.06
+[261] loss_f: 3.71 loss_c: 1.07
+[271] loss_f: 3.26 loss_c: 1.09
+[281] loss_f: 3.23 loss_c: 1.10
+[291] loss_f: 3.24 loss_c: 1.10
+[301] loss_f: 3.21 loss_c: 1.09
+[311] loss_f: 3.31 loss_c: 1.07
+[321] loss_f: 2.82 loss_c: 1.08
+[331] loss_f: 3.11 loss_c: 1.08
+[341] loss_f: 2.89 loss_c: 1.07
+[351] loss_f: 2.97 loss_c: 1.07
+[361] loss_f: 2.77 loss_c: 1.07
+[371] loss_f: 2.99 loss_c: 1.08
+[381] loss_f: 2.89 loss_c: 1.07
+[391] loss_f: 3.03 loss_c: 1.07
+[401] loss_f: 3.04 loss_c: 1.06
+[411] loss_f: 2.69 loss_c: 1.06
+[421] loss_f: 3.09 loss_c: 1.05
+[431] loss_f: 2.61 loss_c: 1.06
+[441] loss_f: 3.57 loss_c: 1.05
+[451] loss_f: 3.17 loss_c: 1.06
+[461] loss_f: 2.89 loss_c: 1.05
+[471] loss_f: 2.88 loss_c: 1.05
+[481] loss_f: 3.21 loss_c: 1.05
+[491] loss_f: 2.62 loss_c: 1.05
+[501] loss_f: 2.67 loss_c: 1.05
+[511] loss_f: 2.94 loss_c: 1.05
+[521] loss_f: 2.78 loss_c: 1.06
+[531] loss_f: 3.05 loss_c: 1.06
+[541] loss_f: 3.16 loss_c: 1.07
+[551] loss_f: 2.63 loss_c: 1.07
+[561] loss_f: 2.66 loss_c: 1.09
+[571] loss_f: 3.00 loss_c: 1.07
+[581] loss_f: 2.83 loss_c: 1.05
+[591] loss_f: 2.90 loss_c: 1.07
+[601] loss_f: 2.62 loss_c: 1.08
+[611] loss_f: 3.10 loss_c: 1.05
+[621] loss_f: 2.60 loss_c: 1.07
+[631] loss_f: 2.79 loss_c: 1.06
+[641] loss_f: 2.83 loss_c: 1.05
+[651] loss_f: 2.75 loss_c: 1.05
+[661] loss_f: 2.69 loss_c: 1.06
+[671] loss_f: 2.51 loss_c: 1.06
+[681] loss_f: 2.31 loss_c: 1.07
+[691] loss_f: 2.45 loss_c: 1.20
+[701] loss_f: 2.65 loss_c: 1.32
+[711] loss_f: 2.63 loss_c: 1.06
+[721] loss_f: 2.99 loss_c: 1.06
+[731] loss_f: 2.64 loss_c: 1.14
+[741] loss_f: 2.57 loss_c: 1.08
+[751] loss_f: 2.86 loss_c: 1.05
+[761] loss_f: 2.96 loss_c: 1.05
+[771] loss_f: 2.43 loss_c: 1.07
+[781] loss_f: 2.58 loss_c: 1.07
+[791] loss_f: 2.88 loss_c: 1.09
+[801] loss_f: 2.51 loss_c: 1.08
+[811] loss_f: 2.65 loss_c: 1.11
+[821] loss_f: 2.65 loss_c: 1.06
+[831] loss_f: 2.51 loss_c: 1.07
+[841] loss_f: 2.70 loss_c: 1.10
+[851] loss_f: 3.35 loss_c: 1.16
+[861] loss_f: 2.70 loss_c: 1.13
+[871] loss_f: 2.59 loss_c: 1.10
+[881] loss_f: 2.36 loss_c: 1.11
+[891] loss_f: 2.67 loss_c: 1.06
+[901] loss_f: 2.19 loss_c: 1.13
+[911] loss_f: 2.66 loss_c: 1.07
+[921] loss_f: 2.49 loss_c: 1.11
+[931] loss_f: 2.48 loss_c: 1.07
+[941] loss_f: 2.55 loss_c: 1.05
+[951] loss_f: 2.89 loss_c: 1.10
+[961] loss_f: 2.51 loss_c: 1.11
+[971] loss_f: 3.10 loss_c: 1.06
+[981] loss_f: 2.60 loss_c: 1.13
+[991] loss_f: 2.28 loss_c: 1.07
+[1001] loss_f: 2.31 loss_c: 1.08
+[1011] loss_f: 2.49 loss_c: 1.06
+[1021] loss_f: 2.86 loss_c: 1.05
+[1031] loss_f: 2.28 loss_c: 1.06
+[1041] loss_f: 2.57 loss_c: 1.04
+[1051] loss_f: 2.67 loss_c: 1.04
+[1061] loss_f: 2.39 loss_c: 1.04
+[1071] loss_f: 2.84 loss_c: 1.06
+[1081] loss_f: 2.68 loss_c: 1.04
+[1091] loss_f: 2.73 loss_c: 1.06
+[1101] loss_f: 2.49 loss_c: 1.14
+[1111] loss_f: 2.16 loss_c: 1.14
+[1121] loss_f: 2.39 loss_c: 1.06
+[1131] loss_f: 2.40 loss_c: 1.05
+[1141] loss_f: 2.71 loss_c: 1.05
+[1151] loss_f: 2.48 loss_c: 1.06
+[1161] loss_f: 2.41 loss_c: 1.05
+[1171] loss_f: 2.57 loss_c: 1.10
+[1181] loss_f: 2.27 loss_c: 1.09
+[1191] loss_f: 2.34 loss_c: 1.14
+[1201] loss_f: 2.58 loss_c: 1.05
+[1211] loss_f: 2.28 loss_c: 1.07
+[1221] loss_f: 2.67 loss_c: 1.08
+[1231] loss_f: 2.47 loss_c: 1.10
+[1241] loss_f: 2.48 loss_c: 1.12
+[1251] loss_f: 2.72 loss_c: 1.15
+[1261] loss_f: 2.43 loss_c: 1.06
+[1271] loss_f: 2.15 loss_c: 1.05
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-0icw27p4'
+[1281] loss_f: 3.07 loss_c: 1.13
+[1291] loss_f: 2.55 loss_c: 1.08
+[1301] loss_f: 2.02 loss_c: 1.09
+[1311] loss_f: 2.22 loss_c: 1.08
+[1321] loss_f: 2.30 loss_c: 1.06
+[1331] loss_f: 2.62 loss_c: 1.05
+[1341] loss_f: 2.21 loss_c: 1.05
+[1351] loss_f: 2.51 loss_c: 1.06
+[1361] loss_f: 2.91 loss_c: 1.06
+[1371] loss_f: 2.55 loss_c: 1.07
+[1381] loss_f: 2.52 loss_c: 1.08
+[1391] loss_f: 2.64 loss_c: 1.06
+[1401] loss_f: 2.11 loss_c: 1.06
+[1411] loss_f: 2.43 loss_c: 1.05
+[1421] loss_f: 2.07 loss_c: 1.12
+[1431] loss_f: 2.31 loss_c: 1.08
+[1441] loss_f: 2.28 loss_c: 1.10
+[1451] loss_f: 2.24 loss_c: 1.05
+[1461] loss_f: 2.08 loss_c: 1.05
+[1471] loss_f: 2.39 loss_c: 1.07
+[1481] loss_f: 2.20 loss_c: 1.08
+[1491] loss_f: 2.48 loss_c: 1.19
+[1501] loss_f: 2.74 loss_c: 1.20
+[1511] loss_f: 2.28 loss_c: 1.15
+[1521] loss_f: 2.56 loss_c: 1.07
+[1531] loss_f: 2.32 loss_c: 1.10
+[1541] loss_f: 2.38 loss_c: 1.23
+[1551] loss_f: 2.15 loss_c: 1.24
+[1561] loss_f: 2.65 loss_c: 1.11
+[1571] loss_f: 2.29 loss_c: 1.07
+[1581] loss_f: 2.62 loss_c: 1.11
+[1591] loss_f: 2.04 loss_c: 1.07
+[1601] loss_f: 2.13 loss_c: 1.06
+[1611] loss_f: 2.50 loss_c: 1.11
+[1621] loss_f: 2.22 loss_c: 1.05
+[1631] loss_f: 2.40 loss_c: 1.08
+[1641] loss_f: 2.30 loss_c: 1.04
+[1651] loss_f: 2.82 loss_c: 1.06
+[1661] loss_f: 2.18 loss_c: 1.08
+[1671] loss_f: 2.41 loss_c: 1.11
+[1681] loss_f: 2.00 loss_c: 1.15
+[1691] loss_f: 2.02 loss_c: 1.14
+[1701] loss_f: 2.32 loss_c: 1.08
+[1711] loss_f: 2.04 loss_c: 1.13
+[1721] loss_f: 2.38 loss_c: 1.07
+[1731] loss_f: 2.26 loss_c: 1.14
+[1741] loss_f: 2.16 loss_c: 1.21
+[1751] loss_f: 2.19 loss_c: 1.08
+[1761] loss_f: 2.58 loss_c: 1.07
+[1771] loss_f: 2.60 loss_c: 1.08
+[1781] loss_f: 2.55 loss_c: 1.10
+[1791] loss_f: 2.23 loss_c: 1.16
+[1801] loss_f: 2.46 loss_c: 1.13
+[1811] loss_f: 2.49 loss_c: 1.07
+[1821] loss_f: 2.35 loss_c: 1.11
+[1831] loss_f: 2.18 loss_c: 1.07
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-_9m6urld'
+[1841] loss_f: 2.62 loss_c: 1.06
+[1851] loss_f: 1.94 loss_c: 1.08
+[1861] loss_f: 2.57 loss_c: 1.07
+[1871] loss_f: 2.20 loss_c: 1.05
+[1881] loss_f: 2.11 loss_c: 1.06
+[1891] loss_f: 2.22 loss_c: 1.05
+[1901] loss_f: 2.14 loss_c: 1.13
+[1911] loss_f: 2.29 loss_c: 1.10
+[1921] loss_f: 2.25 loss_c: 1.19
+[1931] loss_f: 3.14 loss_c: 1.08
+[1941] loss_f: 2.76 loss_c: 1.11
+[1951] loss_f: 2.24 loss_c: 1.14
+[1961] loss_f: 2.01 loss_c: 1.10
+[1971] loss_f: 2.61 loss_c: 1.07
+[1981] loss_f: 2.83 loss_c: 1.09
+[1991] loss_f: 2.18 loss_c: 1.07
+[2001] loss_f: 2.13 loss_c: 1.06
+[2011] loss_f: 2.19 loss_c: 1.05
+[2021] loss_f: 2.62 loss_c: 1.07
+[2031] loss_f: 2.24 loss_c: 1.07
+[2041] loss_f: 2.13 loss_c: 1.14
+[2051] loss_f: 2.06 loss_c: 1.05
+[2061] loss_f: 2.36 loss_c: 1.07
+[2071] loss_f: 2.12 loss_c: 1.05
+[2081] loss_f: 2.81 loss_c: 1.07
+[2091] loss_f: 3.24 loss_c: 1.07
+[2101] loss_f: 2.35 loss_c: 1.05
+[2111] loss_f: 2.49 loss_c: 1.05
+[2121] loss_f: 2.30 loss_c: 1.06
+[2131] loss_f: 2.09 loss_c: 1.05
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-oguoudd8'
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-9rrc4xti'
+[2141] loss_f: 2.08 loss_c: 1.05
+[2151] loss_f: 2.23 loss_c: 1.11
+[2161] loss_f: 2.15 loss_c: 1.07
+[2171] loss_f: 2.13 loss_c: 1.07
+[2181] loss_f: 2.10 loss_c: 1.06
+[2191] loss_f: 2.16 loss_c: 1.06
+[2201] loss_f: 2.34 loss_c: 1.05
+[2211] loss_f: 2.12 loss_c: 1.05
+[2221] loss_f: 3.03 loss_c: 1.09
+[2231] loss_f: 2.33 loss_c: 1.05
+[2241] loss_f: 2.12 loss_c: 1.05
+[2251] loss_f: 2.04 loss_c: 1.04
+[2261] loss_f: 1.91 loss_c: 1.10
+[2271] loss_f: 2.71 loss_c: 1.04
+[2281] loss_f: 2.05 loss_c: 1.13
+[2291] loss_f: 2.98 loss_c: 1.07
+[2301] loss_f: 2.17 loss_c: 1.07
+[2311] loss_f: 2.25 loss_c: 1.12
+[2321] loss_f: 2.26 loss_c: 1.25
+[2331] loss_f: 2.19 loss_c: 1.22
+[2341] loss_f: 1.98 loss_c: 1.67
+[2351] loss_f: 2.09 loss_c: 1.23
+[2361] loss_f: 2.00 loss_c: 1.17
+[2371] loss_f: 2.15 loss_c: 1.14
+[2381] loss_f: 2.16 loss_c: 1.11
+[2391] loss_f: 2.27 loss_c: 1.14
+[2401] loss_f: 2.20 loss_c: 1.12
+[2411] loss_f: 1.72 loss_c: 1.09
+[2421] loss_f: 2.21 loss_c: 1.11
+[2431] loss_f: 2.31 loss_c: 1.08
+[2441] loss_f: 2.26 loss_c: 1.07
+[2451] loss_f: 2.13 loss_c: 1.09
+[2461] loss_f: 2.34 loss_c: 1.08
+[2471] loss_f: 1.97 loss_c: 1.07
+[2481] loss_f: 2.02 loss_c: 1.16
+[2491] loss_f: 2.11 loss_c: 1.08
+[2501] loss_f: 2.19 loss_c: 1.08
+[2511] loss_f: 1.94 loss_c: 1.08
+[2521] loss_f: 2.35 loss_c: 1.07
+[2531] loss_f: 2.18 loss_c: 1.08
+[2541] loss_f: 2.29 loss_c: 1.25
+[2551] loss_f: 2.58 loss_c: 1.15
+[2561] loss_f: 2.08 loss_c: 1.09
+[2571] loss_f: 1.90 loss_c: 1.11
+[2581] loss_f: 2.25 loss_c: 1.13
+[2591] loss_f: 2.10 loss_c: 1.10
+[2601] loss_f: 2.12 loss_c: 1.11
+[2611] loss_f: 2.11 loss_c: 1.09
+[2621] loss_f: 2.02 loss_c: 1.08
+[2631] loss_f: 2.09 loss_c: 1.06
+[2641] loss_f: 2.23 loss_c: 1.08
+[2651] loss_f: 2.00 loss_c: 1.07
+[2661] loss_f: 2.50 loss_c: 1.07
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-pi8y4y3t'
+[2671] loss_f: 2.09 loss_c: 1.10
+[2681] loss_f: 2.32 loss_c: 1.08
+[2691] loss_f: 2.27 loss_c: 1.08
+[2701] loss_f: 2.03 loss_c: 1.07
+[2711] loss_f: 2.06 loss_c: 1.05
+[2721] loss_f: 1.98 loss_c: 1.08
+[2731] loss_f: 2.43 loss_c: 1.08
+[2741] loss_f: 2.01 loss_c: 1.11
+[2751] loss_f: 2.02 loss_c: 1.15
+[2761] loss_f: 2.31 loss_c: 1.15
+[2771] loss_f: 1.72 loss_c: 1.09
+[2781] loss_f: 1.91 loss_c: 1.10
+[2791] loss_f: 2.16 loss_c: 1.08
+[2801] loss_f: 2.07 loss_c: 1.07
+[2811] loss_f: 1.97 loss_c: 1.08
+[2821] loss_f: 2.14 loss_c: 1.07
+[2831] loss_f: 2.02 loss_c: 1.06
+[2841] loss_f: 2.02 loss_c: 1.08
+[2851] loss_f: 2.28 loss_c: 1.07
+[2861] loss_f: 2.27 loss_c: 1.20
+[2871] loss_f: 2.42 loss_c: 1.11
+[2881] loss_f: 2.04 loss_c: 1.10
+[2891] loss_f: 1.89 loss_c: 1.09
+[2901] loss_f: 2.94 loss_c: 1.11
+[2911] loss_f: 2.66 loss_c: 1.09
+[2921] loss_f: 2.10 loss_c: 1.14
+[2931] loss_f: 1.99 loss_c: 1.10
+[2941] loss_f: 2.45 loss_c: 1.08
+[2951] loss_f: 2.91 loss_c: 1.08
+[2961] loss_f: 1.92 loss_c: 1.06
+[2971] loss_f: 2.14 loss_c: 1.11
+[2981] loss_f: 2.01 loss_c: 1.07
+[2991] loss_f: 1.99 loss_c: 1.14
+[3001] loss_f: 2.31 loss_c: 1.08
+[3011] loss_f: 2.00 loss_c: 1.09
+[3021] loss_f: 2.18 loss_c: 1.08
+[3031] loss_f: 2.28 loss_c: 1.08
+[3041] loss_f: 1.88 loss_c: 1.08
+[3051] loss_f: 1.97 loss_c: 1.06
+[3061] loss_f: 1.91 loss_c: 1.06
+[3071] loss_f: 1.93 loss_c: 1.06
+[3081] loss_f: 1.94 loss_c: 1.09
+[3091] loss_f: 1.82 loss_c: 1.20
+[3101] loss_f: 1.97 loss_c: 1.09
+[3111] loss_f: 1.97 loss_c: 1.07
+[3121] loss_f: 1.75 loss_c: 1.08
+[3131] loss_f: 1.94 loss_c: 1.09
+[3141] loss_f: 1.98 loss_c: 1.10
+[3151] loss_f: 1.80 loss_c: 1.07
+[3161] loss_f: 2.22 loss_c: 1.08
+[3171] loss_f: 2.09 loss_c: 1.05
+[3181] loss_f: 2.07 loss_c: 1.07
+[3191] loss_f: 1.92 loss_c: 1.07
+[3201] loss_f: 1.88 loss_c: 1.16
+[3211] loss_f: 2.08 loss_c: 1.08
+[3221] loss_f: 2.04 loss_c: 1.06
+[3231] loss_f: 2.26 loss_c: 1.06
+[3241] loss_f: 2.03 loss_c: 1.05
+[3251] loss_f: 2.04 loss_c: 1.06
+[3261] loss_f: 2.09 loss_c: 1.07
+[3271] loss_f: 1.83 loss_c: 1.12
+[3281] loss_f: 1.96 loss_c: 1.06
+[3291] loss_f: 2.17 loss_c: 1.07
+[3301] loss_f: 1.71 loss_c: 1.06
+[3311] loss_f: 2.43 loss_c: 1.07
+[3321] loss_f: 1.93 loss_c: 1.09
+[3331] loss_f: 2.25 loss_c: 1.07
+[3341] loss_f: 1.92 loss_c: 1.09
+[3351] loss_f: 1.76 loss_c: 1.07
+[3361] loss_f: 1.83 loss_c: 1.08
+[3371] loss_f: 1.74 loss_c: 1.09
+[3381] loss_f: 2.48 loss_c: 1.07
+[3391] loss_f: 1.80 loss_c: 1.07
+[3401] loss_f: 1.69 loss_c: 1.10
+[3411] loss_f: 1.97 loss_c: 1.11
+[3421] loss_f: 2.10 loss_c: 1.06
+[3431] loss_f: 1.81 loss_c: 1.08
+[3441] loss_f: 2.09 loss_c: 1.08
+[3451] loss_f: 2.14 loss_c: 1.08
+[3461] loss_f: 1.91 loss_c: 1.11
+[3471] loss_f: 2.03 loss_c: 1.06
+[3481] loss_f: 2.11 loss_c: 1.08
+[3491] loss_f: 2.10 loss_c: 1.07
+[3501] loss_f: 2.14 loss_c: 1.08
+[3511] loss_f: 2.07 loss_c: 1.15
+[3521] loss_f: 1.96 loss_c: 1.05
+[3531] loss_f: 1.97 loss_c: 1.06
+[3541] loss_f: 2.05 loss_c: 1.05
+[3551] loss_f: 1.81 loss_c: 1.10
+[3561] loss_f: 1.89 loss_c: 1.07
+[3571] loss_f: 2.06 loss_c: 1.08
+[3581] loss_f: 1.93 loss_c: 1.10
+[3591] loss_f: 2.15 loss_c: 1.05
+[3601] loss_f: 1.89 loss_c: 1.09
+[3611] loss_f: 1.88 loss_c: 1.26
+[3621] loss_f: 1.94 loss_c: 1.76
+[3631] loss_f: 1.92 loss_c: 1.60
+[3641] loss_f: 1.89 loss_c: 1.31
+[3651] loss_f: 2.08 loss_c: 1.32
+[3661] loss_f: 1.77 loss_c: 1.52
+[3671] loss_f: 1.95 loss_c: 1.60
+[3681] loss_f: 1.93 loss_c: 1.18
+[3691] loss_f: 2.07 loss_c: 1.19
+[3701] loss_f: 1.85 loss_c: 1.14
+[3711] loss_f: 1.82 loss_c: 1.15
+[3721] loss_f: 1.86 loss_c: 1.14
+[3731] loss_f: 1.89 loss_c: 1.16
+[3741] loss_f: 1.65 loss_c: 1.11
+[3751] loss_f: 1.84 loss_c: 1.10
+[3761] loss_f: 1.91 loss_c: 1.09
+[3771] loss_f: 2.08 loss_c: 1.10
+[3781] loss_f: 2.11 loss_c: 1.10
+[3791] loss_f: 1.84 loss_c: 1.09
+[3801] loss_f: 2.11 loss_c: 1.08
+[3811] loss_f: 2.12 loss_c: 1.10
+[3821] loss_f: 2.15 loss_c: 1.07
+[3831] loss_f: 1.96 loss_c: 1.09
+[3841] loss_f: 1.97 loss_c: 1.11
+[3851] loss_f: 2.23 loss_c: 1.09
+[3861] loss_f: 2.12 loss_c: 1.07
+[3871] loss_f: 3.12 loss_c: 1.09
+[3881] loss_f: 2.17 loss_c: 1.07
+[3891] loss_f: 2.64 loss_c: 1.20
+[3901] loss_f: 2.19 loss_c: 1.08
+[3911] loss_f: 1.97 loss_c: 1.09
+[3921] loss_f: 2.01 loss_c: 1.10
+[3931] loss_f: 1.99 loss_c: 1.10
+[3941] loss_f: 1.84 loss_c: 1.11
+[3951] loss_f: 1.94 loss_c: 1.15
+[3961] loss_f: 2.21 loss_c: 1.10
+[3971] loss_f: 2.45 loss_c: 1.13
+[3981] loss_f: 1.68 loss_c: 1.11
+[3991] loss_f: 1.93 loss_c: 1.11
+[4001] loss_f: 1.74 loss_c: 1.15
+[4011] loss_f: 1.84 loss_c: 1.07
+[4021] loss_f: 2.05 loss_c: 1.10
+[4031] loss_f: 1.83 loss_c: 1.14
+[4041] loss_f: 1.91 loss_c: 1.13
+[4051] loss_f: 2.01 loss_c: 1.09
+[4061] loss_f: 2.06 loss_c: 1.08
+[4071] loss_f: 1.75 loss_c: 1.08
+[4081] loss_f: 1.92 loss_c: 1.08
+[4091] loss_f: 1.83 loss_c: 1.08
+[4101] loss_f: 1.77 loss_c: 1.11
+[4111] loss_f: 1.66 loss_c: 1.10
+[4121] loss_f: 2.36 loss_c: 1.08
+[4131] loss_f: 1.86 loss_c: 1.09
+[4141] loss_f: 1.69 loss_c: 1.07
+[4151] loss_f: 2.08 loss_c: 1.09
+[4161] loss_f: 1.82 loss_c: 1.12
+[4171] loss_f: 1.77 loss_c: 1.08
+[4181] loss_f: 1.94 loss_c: 1.15
+[4191] loss_f: 2.12 loss_c: 1.08
+[4201] loss_f: 2.10 loss_c: 1.10
+[4211] loss_f: 1.88 loss_c: 1.09
+[4221] loss_f: 2.17 loss_c: 1.08
+[4231] loss_f: 2.52 loss_c: 1.10
+[4241] loss_f: 1.80 loss_c: 1.11
+[4251] loss_f: 1.90 loss_c: 1.11
+[4261] loss_f: 1.92 loss_c: 1.07
+[4271] loss_f: 1.93 loss_c: 1.08
+[4281] loss_f: 1.79 loss_c: 1.09
+[4291] loss_f: 2.08 loss_c: 1.13
+[4301] loss_f: 1.74 loss_c: 1.08
+[4311] loss_f: 1.71 loss_c: 1.08
+[4321] loss_f: 1.98 loss_c: 1.09
+[4331] loss_f: 1.81 loss_c: 1.12
+[4341] loss_f: 1.96 loss_c: 1.10
+[4351] loss_f: 2.12 loss_c: 2.09
+[4361] loss_f: 1.93 loss_c: 1.23
+[4371] loss_f: 1.82 loss_c: 1.36
+[4381] loss_f: 1.85 loss_c: 1.12
+[4391] loss_f: 1.85 loss_c: 1.14
+[4401] loss_f: 1.97 loss_c: 1.14
+[4411] loss_f: 1.98 loss_c: 1.10
+[4421] loss_f: 1.83 loss_c: 1.14
+[4431] loss_f: 2.00 loss_c: 1.11
+[4441] loss_f: 1.85 loss_c: 1.13
+[4451] loss_f: 2.12 loss_c: 1.10
+[4461] loss_f: 1.68 loss_c: 1.09
+[4471] loss_f: 1.80 loss_c: 1.15
+[4481] loss_f: 1.76 loss_c: 1.17
+[4491] loss_f: 1.82 loss_c: 1.12
+[4501] loss_f: 2.09 loss_c: 1.13
+[4511] loss_f: 2.11 loss_c: 1.10
+[4521] loss_f: 1.58 loss_c: 1.08
+[4531] loss_f: 1.77 loss_c: 1.09
+[4541] loss_f: 1.87 loss_c: 1.13
+[4551] loss_f: 2.00 loss_c: 1.18
+[4561] loss_f: 2.23 loss_c: 1.18
+[4571] loss_f: 1.96 loss_c: 1.12
+[4581] loss_f: 2.13 loss_c: 1.08
+[4591] loss_f: 2.50 loss_c: 1.14
+[4601] loss_f: 2.05 loss_c: 1.65
+[4611] loss_f: 1.76 loss_c: 2.20
+[4621] loss_f: 2.35 loss_c: 1.81
+[4631] loss_f: 2.07 loss_c: 1.78
+[4641] loss_f: 1.62 loss_c: 1.23
+[4651] loss_f: 2.49 loss_c: 1.28
+[4661] loss_f: 2.26 loss_c: 1.16
+[4671] loss_f: 1.84 loss_c: 1.15
+[4681] loss_f: 1.97 loss_c: 1.45
+[4691] loss_f: 1.78 loss_c: 1.20
+[4701] loss_f: 1.79 loss_c: 1.23
+[4711] loss_f: 1.77 loss_c: 1.17
+[4721] loss_f: 1.85 loss_c: 1.15
+[4731] loss_f: 1.67 loss_c: 1.11
+[4741] loss_f: 2.03 loss_c: 1.15
+[4751] loss_f: 1.70 loss_c: 1.26
+[4761] loss_f: 1.95 loss_c: 1.73
+[4771] loss_f: 1.68 loss_c: 1.29
+[4781] loss_f: 1.75 loss_c: 1.11
+[4791] loss_f: 1.86 loss_c: 1.12
+[4801] loss_f: 1.92 loss_c: 1.10
+[4811] loss_f: 1.58 loss_c: 1.09
+[4821] loss_f: 1.87 loss_c: 1.12
+[4831] loss_f: 1.94 loss_c: 1.18
+[4841] loss_f: 1.88 loss_c: 1.15
+[4851] loss_f: 2.10 loss_c: 1.16
+[4861] loss_f: 1.85 loss_c: 1.09
+[4871] loss_f: 1.86 loss_c: 1.09
+[4881] loss_f: 1.88 loss_c: 1.12
+[4891] loss_f: 2.59 loss_c: 1.09
+[4901] loss_f: 2.03 loss_c: 1.09
+[4911] loss_f: 2.14 loss_c: 1.09
+[4921] loss_f: 1.69 loss_c: 1.10
+[4931] loss_f: 1.95 loss_c: 1.09
+[4941] loss_f: 1.89 loss_c: 1.08
+[4951] loss_f: 1.89 loss_c: 1.11
+[4961] loss_f: 1.79 loss_c: 1.14
+[4971] loss_f: 1.87 loss_c: 1.09
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-tuuj311b'
+[4981] loss_f: 2.08 loss_c: 1.09
+[4991] loss_f: 1.72 loss_c: 1.10
+[5001] loss_f: 1.68 loss_c: 1.10
+[5011] loss_f: 1.76 loss_c: 1.09
+[5021] loss_f: 1.73 loss_c: 1.09
+[5031] loss_f: 1.76 loss_c: 1.08
+[5041] loss_f: 1.83 loss_c: 1.11
+[5051] loss_f: 1.73 loss_c: 1.09
+[5061] loss_f: 1.80 loss_c: 1.16
+[5071] loss_f: 1.60 loss_c: 1.11
+[5081] loss_f: 1.64 loss_c: 1.10
+[5091] loss_f: 1.86 loss_c: 1.09
+[5101] loss_f: 1.75 loss_c: 1.09
+[5111] loss_f: 1.72 loss_c: 1.08
+[5121] loss_f: 1.76 loss_c: 1.09
+[5131] loss_f: 1.57 loss_c: 1.09
+[5141] loss_f: 3.36 loss_c: 1.09
+[5151] loss_f: 2.06 loss_c: 1.09
+[5161] loss_f: 2.20 loss_c: 1.08
+[5171] loss_f: 1.73 loss_c: 1.09
+[5181] loss_f: 1.59 loss_c: 1.09
+[5191] loss_f: 1.66 loss_c: 1.08
+[5201] loss_f: 1.86 loss_c: 1.08
+[5211] loss_f: 1.89 loss_c: 1.08
+[5221] loss_f: 2.13 loss_c: 1.10
+[5231] loss_f: 2.09 loss_c: 1.11
+[5241] loss_f: 1.69 loss_c: 1.08
+[5251] loss_f: 1.61 loss_c: 1.09
+[5261] loss_f: 1.80 loss_c: 1.09
+[5271] loss_f: 1.80 loss_c: 1.08
+[5281] loss_f: 1.73 loss_c: 1.09
+[5291] loss_f: 1.79 loss_c: 1.09
+[5301] loss_f: 1.79 loss_c: 1.09
+[5311] loss_f: 2.03 loss_c: 1.09
+[5321] loss_f: 1.84 loss_c: 1.09
+[5331] loss_f: 1.85 loss_c: 1.09
+[5341] loss_f: 2.26 loss_c: 1.11
+[5351] loss_f: 1.91 loss_c: 1.09
+[5361] loss_f: 1.71 loss_c: 1.08
+[5371] loss_f: 1.57 loss_c: 1.08
+[5381] loss_f: 1.70 loss_c: 1.09
+[5391] loss_f: 1.84 loss_c: 1.08
+[5401] loss_f: 1.84 loss_c: 1.08
+[5411] loss_f: 1.89 loss_c: 1.08
+[5421] loss_f: 1.90 loss_c: 1.08
+[5431] loss_f: 1.81 loss_c: 1.09
+[5441] loss_f: 1.85 loss_c: 1.08
+[5451] loss_f: 1.81 loss_c: 1.30
+[5461] loss_f: 1.83 loss_c: 1.09
+[5471] loss_f: 1.73 loss_c: 1.09
+[5481] loss_f: 1.88 loss_c: 1.09
+[5491] loss_f: 1.55 loss_c: 1.09
+[5501] loss_f: 1.64 loss_c: 1.08
+[5511] loss_f: 2.06 loss_c: 1.09
+[5521] loss_f: 1.71 loss_c: 1.09
+[5531] loss_f: 1.46 loss_c: 1.08
+[5541] loss_f: 1.64 loss_c: 1.08
+[5551] loss_f: 1.71 loss_c: 1.11
+[5561] loss_f: 1.82 loss_c: 1.10
+[5571] loss_f: 2.10 loss_c: 1.18
+[5581] loss_f: 1.83 loss_c: 1.98
+[5591] loss_f: 1.66 loss_c: 2.71
+[5601] loss_f: 1.74 loss_c: 1.45
+[5611] loss_f: 2.55 loss_c: 1.22
+[5621] loss_f: 1.98 loss_c: 1.57
+[5631] loss_f: 1.85 loss_c: 1.33
+[5641] loss_f: 1.73 loss_c: 1.12
+[5651] loss_f: 2.25 loss_c: 1.14
+[5661] loss_f: 1.97 loss_c: 1.08
+[5671] loss_f: 1.83 loss_c: 1.15
+[5681] loss_f: 1.67 loss_c: 1.13
+[5691] loss_f: 2.38 loss_c: 1.16
+[5701] loss_f: 2.07 loss_c: 1.10
+[5711] loss_f: 1.97 loss_c: 1.09
+[5721] loss_f: 1.68 loss_c: 1.22
+[5731] loss_f: 2.05 loss_c: 1.13
+[5741] loss_f: 1.72 loss_c: 1.34
+[5751] loss_f: 1.84 loss_c: 1.12
+[5761] loss_f: 1.89 loss_c: 1.20
+[5771] loss_f: 2.35 loss_c: 1.10
+[5781] loss_f: 2.09 loss_c: 1.11
+[5791] loss_f: 1.82 loss_c: 1.10
+[5801] loss_f: 1.82 loss_c: 1.09
+[5811] loss_f: 1.87 loss_c: 1.13
+[5821] loss_f: 2.09 loss_c: 1.17
+[5831] loss_f: 1.58 loss_c: 1.09
+[5841] loss_f: 1.76 loss_c: 1.12
+[5851] loss_f: 1.73 loss_c: 1.13
+[5861] loss_f: 1.73 loss_c: 1.11
+[5871] loss_f: 2.06 loss_c: 1.10
+[5881] loss_f: 1.70 loss_c: 1.32
+[5891] loss_f: 1.64 loss_c: 1.17
+[5901] loss_f: 1.71 loss_c: 1.12
+[5911] loss_f: 1.46 loss_c: 1.22
+[5921] loss_f: 2.15 loss_c: 1.09
+[5931] loss_f: 1.72 loss_c: 1.17
+[5941] loss_f: 2.13 loss_c: 1.14
+[5951] loss_f: 1.69 loss_c: 1.14
+[5961] loss_f: 1.82 loss_c: 1.10
+[5971] loss_f: 1.67 loss_c: 1.10
+[5981] loss_f: 1.63 loss_c: 1.09
+[5991] loss_f: 1.76 loss_c: 1.17
+[6001] loss_f: 1.85 loss_c: 1.15
+[6011] loss_f: 1.78 loss_c: 1.14
+[6021] loss_f: 1.71 loss_c: 1.15
+[6031] loss_f: 1.49 loss_c: 1.12
+[6041] loss_f: 1.71 loss_c: 1.12
+[6051] loss_f: 1.99 loss_c: 1.15
+[6061] loss_f: 1.67 loss_c: 1.09
+[6071] loss_f: 1.92 loss_c: 1.11
+[6081] loss_f: 1.69 loss_c: 1.10
+[6091] loss_f: 1.89 loss_c: 1.12
+[6101] loss_f: 1.55 loss_c: 1.10
+[6111] loss_f: 1.64 loss_c: 1.10
+[6121] loss_f: 1.87 loss_c: 1.10
+[6131] loss_f: 1.89 loss_c: 1.12
+[6141] loss_f: 1.65 loss_c: 1.17
+[6151] loss_f: 1.60 loss_c: 1.15
+[6161] loss_f: 2.19 loss_c: 1.11
+[6171] loss_f: 1.62 loss_c: 1.12
+[6181] loss_f: 1.66 loss_c: 1.11
+[6191] loss_f: 1.51 loss_c: 1.10
+[6201] loss_f: 1.78 loss_c: 1.09
+[6211] loss_f: 1.71 loss_c: 1.15
+[6221] loss_f: 1.71 loss_c: 1.14
+[6231] loss_f: 1.87 loss_c: 1.11
+[6241] loss_f: 1.85 loss_c: 1.11
+[6251] loss_f: 1.73 loss_c: 1.09
+[6261] loss_f: 2.02 loss_c: 1.09
+[6271] loss_f: 1.93 loss_c: 1.19
+[6281] loss_f: 1.60 loss_c: 1.11
+[6291] loss_f: 1.69 loss_c: 1.11
+[6301] loss_f: 1.56 loss_c: 1.11
+[6311] loss_f: 1.74 loss_c: 1.09
+[6321] loss_f: 1.91 loss_c: 1.14
+[6331] loss_f: 2.10 loss_c: 1.14
+[6341] loss_f: 1.70 loss_c: 1.12
+[6351] loss_f: 1.55 loss_c: 1.09
+[6361] loss_f: 1.96 loss_c: 1.15
+[6371] loss_f: 1.70 loss_c: 1.21
+[6381] loss_f: 1.84 loss_c: 1.11
+[6391] loss_f: 2.09 loss_c: 1.09
+[6401] loss_f: 1.74 loss_c: 1.29
+[6411] loss_f: 1.87 loss_c: 1.09
+[6421] loss_f: 1.58 loss_c: 1.09
+[6431] loss_f: 1.91 loss_c: 1.10
+[6441] loss_f: 1.80 loss_c: 1.11
+[6451] loss_f: 2.42 loss_c: 1.11
+[6461] loss_f: 1.87 loss_c: 1.09
+[6471] loss_f: 1.77 loss_c: 1.10
+[6481] loss_f: 1.56 loss_c: 1.10
+[6491] loss_f: 1.68 loss_c: 1.09
+[6501] loss_f: 1.98 loss_c: 1.13
+[6511] loss_f: 1.61 loss_c: 1.15
+[6521] loss_f: 1.69 loss_c: 1.12
+[6531] loss_f: 1.64 loss_c: 1.10
+[6541] loss_f: 1.63 loss_c: 1.09
+[6551] loss_f: 1.79 loss_c: 1.10
+[6561] loss_f: 1.64 loss_c: 1.13
+[6571] loss_f: 1.67 loss_c: 1.17
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-bw7_f4bw'
+[6581] loss_f: 1.63 loss_c: 1.13
+[6591] loss_f: 1.72 loss_c: 1.11
+[6601] loss_f: 1.82 loss_c: 1.10
+[6611] loss_f: 1.47 loss_c: 1.09
+[6621] loss_f: 1.65 loss_c: 1.09
+[6631] loss_f: 1.78 loss_c: 1.11
+[6641] loss_f: 1.62 loss_c: 1.09
+[6651] loss_f: 1.62 loss_c: 1.10
+[6661] loss_f: 1.54 loss_c: 1.13
+[6671] loss_f: 1.71 loss_c: 1.19
+[6681] loss_f: 2.18 loss_c: 1.12
+[6691] loss_f: 1.61 loss_c: 1.11
+[6701] loss_f: 1.61 loss_c: 1.11
+[6711] loss_f: 1.63 loss_c: 1.15
+[6721] loss_f: 1.91 loss_c: 1.11
+[6731] loss_f: 1.47 loss_c: 1.10
+[6741] loss_f: 1.67 loss_c: 1.10
+[6751] loss_f: 1.56 loss_c: 1.10
+[6761] loss_f: 1.62 loss_c: 1.11
+[6771] loss_f: 1.69 loss_c: 1.10
+[6781] loss_f: 1.55 loss_c: 1.10
+[6791] loss_f: 1.75 loss_c: 1.10
+[6801] loss_f: 1.88 loss_c: 1.09
+[6811] loss_f: 1.56 loss_c: 1.10
+[6821] loss_f: 1.65 loss_c: 1.09
+[6831] loss_f: 1.63 loss_c: 1.10
+[6841] loss_f: 1.55 loss_c: 1.11
+[6851] loss_f: 1.60 loss_c: 1.10
+[6861] loss_f: 1.78 loss_c: 1.10
+[6871] loss_f: 1.85 loss_c: 1.09
+[6881] loss_f: 1.60 loss_c: 1.09
+[6891] loss_f: 1.38 loss_c: 1.13
+[6901] loss_f: 1.83 loss_c: 1.09
+[6911] loss_f: 1.61 loss_c: 1.15
+[6921] loss_f: 1.65 loss_c: 1.10
+[6931] loss_f: 1.69 loss_c: 1.10
+[6941] loss_f: 1.45 loss_c: 1.12
+[6951] loss_f: 1.88 loss_c: 1.15
+[6961] loss_f: 1.80 loss_c: 1.11
+[6971] loss_f: 1.95 loss_c: 1.10
+[6981] loss_f: 1.71 loss_c: 1.11
+[6991] loss_f: 1.46 loss_c: 1.13
+[7001] loss_f: 2.16 loss_c: 1.15
+[7011] loss_f: 1.67 loss_c: 1.10
+[7021] loss_f: 1.65 loss_c: 1.10
+[7031] loss_f: 2.13 loss_c: 1.12
+[7041] loss_f: 1.71 loss_c: 1.08
+[7051] loss_f: 1.76 loss_c: 1.09
+[7061] loss_f: 1.62 loss_c: 1.09
+[7071] loss_f: 1.43 loss_c: 1.09
+[7081] loss_f: 1.63 loss_c: 1.11
+[7091] loss_f: 1.81 loss_c: 1.15
+[7101] loss_f: 1.48 loss_c: 1.12
+[7111] loss_f: 1.73 loss_c: 1.10
+[7121] loss_f: 2.00 loss_c: 1.12
+[7131] loss_f: 1.56 loss_c: 1.10
+[7141] loss_f: 1.88 loss_c: 1.11
+[7151] loss_f: 1.82 loss_c: 1.10
+[7161] loss_f: 1.58 loss_c: 1.12
+[7171] loss_f: 1.64 loss_c: 1.18
+[7181] loss_f: 1.72 loss_c: 1.15
+[7191] loss_f: 1.41 loss_c: 1.09
+[7201] loss_f: 1.65 loss_c: 1.09
+[7211] loss_f: 1.52 loss_c: 1.12
+[7221] loss_f: 1.70 loss_c: 1.10
+[7231] loss_f: 1.50 loss_c: 1.11
+[7241] loss_f: 1.60 loss_c: 1.10
+[7251] loss_f: 1.52 loss_c: 1.08
+[7261] loss_f: 1.90 loss_c: 1.11
+[7271] loss_f: 1.75 loss_c: 1.11
+[7281] loss_f: 1.86 loss_c: 1.11
+[7291] loss_f: 1.75 loss_c: 1.10
+[7301] loss_f: 1.75 loss_c: 1.10
+[7311] loss_f: 1.82 loss_c: 1.12
+[7321] loss_f: 1.90 loss_c: 1.11
+[7331] loss_f: 1.75 loss_c: 1.09
+[7341] loss_f: 1.59 loss_c: 1.11
+[7351] loss_f: 1.68 loss_c: 1.10
+[7361] loss_f: 1.81 loss_c: 1.12
+[7371] loss_f: 1.47 loss_c: 1.11
+[7381] loss_f: 1.83 loss_c: 1.10
+[7391] loss_f: 1.57 loss_c: 1.10
+[7401] loss_f: 1.69 loss_c: 1.09
+[7411] loss_f: 1.99 loss_c: 1.09
+[7421] loss_f: 1.57 loss_c: 1.10
+[7431] loss_f: 1.74 loss_c: 1.11
+[7441] loss_f: 1.60 loss_c: 1.09
+[7451] loss_f: 1.51 loss_c: 1.09
+[7461] loss_f: 1.42 loss_c: 1.16
+[7471] loss_f: 1.49 loss_c: 1.09
+[7481] loss_f: 2.10 loss_c: 1.10
+[7491] loss_f: 1.55 loss_c: 1.12
+[7501] loss_f: 1.64 loss_c: 1.09
+[7511] loss_f: 1.51 loss_c: 1.14
+[7521] loss_f: 1.36 loss_c: 1.10
+[7531] loss_f: 1.45 loss_c: 1.12
+[7541] loss_f: 1.65 loss_c: 1.10
+[7551] loss_f: 1.66 loss_c: 1.09
+[7561] loss_f: 1.67 loss_c: 1.09
+[7571] loss_f: 1.73 loss_c: 1.10
+[7581] loss_f: 1.75 loss_c: 1.10
+[7591] loss_f: 1.49 loss_c: 1.09
+[7601] loss_f: 1.51 loss_c: 1.10
+[7611] loss_f: 1.36 loss_c: 1.09
+[7621] loss_f: 1.53 loss_c: 1.09
+[7631] loss_f: 1.65 loss_c: 1.10
+[7641] loss_f: 1.66 loss_c: 1.10
+[7651] loss_f: 1.63 loss_c: 1.10
+[7661] loss_f: 1.70 loss_c: 1.13
+[7671] loss_f: 1.60 loss_c: 1.12
+[7681] loss_f: 2.03 loss_c: 1.11
+[7691] loss_f: 1.61 loss_c: 1.09
+[7701] loss_f: 1.44 loss_c: 1.10
+[7711] loss_f: 2.07 loss_c: 1.10
+[7721] loss_f: 1.76 loss_c: 1.10
+[7731] loss_f: 1.77 loss_c: 1.09
+[7741] loss_f: 1.49 loss_c: 1.11
+[7751] loss_f: 1.51 loss_c: 1.09
+[7761] loss_f: 1.47 loss_c: 1.10
+[7771] loss_f: 1.49 loss_c: 1.10
+[7781] loss_f: 1.68 loss_c: 1.10
+[7791] loss_f: 1.66 loss_c: 1.09
+[7801] loss_f: 1.51 loss_c: 1.09
+[7811] loss_f: 1.51 loss_c: 1.09
+[7821] loss_f: 1.60 loss_c: 1.09
+[7831] loss_f: 1.72 loss_c: 1.10
+[7841] loss_f: 1.53 loss_c: 1.10
+[7851] loss_f: 1.63 loss_c: 1.09
+[7861] loss_f: 1.49 loss_c: 1.09
+[7871] loss_f: 2.13 loss_c: 1.11
+[7881] loss_f: 1.79 loss_c: 1.10
+[7891] loss_f: 2.10 loss_c: 1.09
+[7901] loss_f: 1.92 loss_c: 1.09
+[7911] loss_f: 1.86 loss_c: 1.08
+[7921] loss_f: 1.38 loss_c: 1.10
+[7931] loss_f: 1.80 loss_c: 1.10
+[7941] loss_f: 1.58 loss_c: 1.09
+[7951] loss_f: 1.77 loss_c: 1.08
+[7961] loss_f: 1.68 loss_c: 1.10
+[7971] loss_f: 3.02 loss_c: 1.12
+[7981] loss_f: 2.60 loss_c: 1.12
+[7991] loss_f: 2.11 loss_c: 1.09
+[8001] loss_f: 1.93 loss_c: 1.09
+[8011] loss_f: 1.90 loss_c: 1.09
+[8021] loss_f: 1.75 loss_c: 1.09
+[8031] loss_f: 1.92 loss_c: 1.10
+[8041] loss_f: 1.62 loss_c: 1.10
+[8051] loss_f: 1.90 loss_c: 1.11
+[8061] loss_f: 1.59 loss_c: 1.10
+[8071] loss_f: 1.66 loss_c: 1.10
+[8081] loss_f: 1.73 loss_c: 1.09
+[8091] loss_f: 1.53 loss_c: 1.09
+[8101] loss_f: 1.65 loss_c: 1.08
+[8111] loss_f: 2.16 loss_c: 1.09
+[8121] loss_f: 1.78 loss_c: 1.09
+[8131] loss_f: 1.43 loss_c: 1.09
+[8141] loss_f: 1.72 loss_c: 1.09
+[8151] loss_f: 1.40 loss_c: 1.08
+[8161] loss_f: 1.71 loss_c: 1.09
+[8171] loss_f: 1.47 loss_c: 1.09
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-tjusdg8e'
+[8181] loss_f: 1.82 loss_c: 1.09
+[8191] loss_f: 1.49 loss_c: 1.09
+[8201] loss_f: 1.61 loss_c: 1.09
+[8211] loss_f: 1.42 loss_c: 1.09
+[8221] loss_f: 1.57 loss_c: 1.15
+[8231] loss_f: 1.39 loss_c: 1.08
+[8241] loss_f: 1.63 loss_c: 1.09
+[8251] loss_f: 1.70 loss_c: 1.09
+[8261] loss_f: 1.81 loss_c: 1.09
+[8271] loss_f: 1.79 loss_c: 1.09
+[8281] loss_f: 2.07 loss_c: 1.09
+[8291] loss_f: 1.50 loss_c: 1.08
+[8301] loss_f: 1.55 loss_c: 1.09
+[8311] loss_f: 1.50 loss_c: 1.09
+[8321] loss_f: 1.56 loss_c: 1.08
+[8331] loss_f: 1.48 loss_c: 1.09
+[8341] loss_f: 1.54 loss_c: 1.09
+[8351] loss_f: 1.46 loss_c: 1.09
+[8361] loss_f: 2.07 loss_c: 1.09
+[8371] loss_f: 1.71 loss_c: 1.09
+[8381] loss_f: 1.60 loss_c: 1.09
+[8391] loss_f: 1.57 loss_c: 1.09
+[8401] loss_f: 1.49 loss_c: 1.08
+[8411] loss_f: 2.27 loss_c: 1.10
+[8421] loss_f: 1.61 loss_c: 1.09
+[8431] loss_f: 1.44 loss_c: 1.10
+[8441] loss_f: 1.61 loss_c: 1.09
+[8451] loss_f: 1.47 loss_c: 1.29
+[8461] loss_f: 1.56 loss_c: 1.10
+[8471] loss_f: 1.56 loss_c: 1.10
+[8481] loss_f: 1.67 loss_c: 1.09
+[8491] loss_f: 1.42 loss_c: 1.09
+[8501] loss_f: 1.68 loss_c: 1.10
+[8511] loss_f: 1.73 loss_c: 1.09
+[8521] loss_f: 1.52 loss_c: 1.10
+[8531] loss_f: 1.48 loss_c: 1.09
+[8541] loss_f: 1.51 loss_c: 1.11
+[8551] loss_f: 1.59 loss_c: 1.26
+[8561] loss_f: 1.63 loss_c: 1.17
+[8571] loss_f: 1.68 loss_c: 1.98
+[8581] loss_f: 1.87 loss_c: 1.29
+[8591] loss_f: 1.61 loss_c: 1.60
+[8601] loss_f: 1.54 loss_c: 1.12
+[8611] loss_f: 1.62 loss_c: 1.40
+[8621] loss_f: 1.90 loss_c: 1.39
+[8631] loss_f: 1.72 loss_c: 1.43
+[8641] loss_f: 1.51 loss_c: 2.43
+[8651] loss_f: 1.62 loss_c: 1.49
+[8661] loss_f: 1.71 loss_c: 1.57
+[8671] loss_f: 1.71 loss_c: 1.39
+[8681] loss_f: 1.31 loss_c: 1.76
+[8691] loss_f: 1.49 loss_c: 1.51
+[8701] loss_f: 1.41 loss_c: 1.28
+[8711] loss_f: 1.84 loss_c: 1.19
+[8721] loss_f: 1.54 loss_c: 1.16
+[8731] loss_f: 1.66 loss_c: 1.21
+[8741] loss_f: 1.66 loss_c: 1.23
+[8751] loss_f: 1.51 loss_c: 1.20
+[8761] loss_f: 1.73 loss_c: 1.14
+[8771] loss_f: 1.64 loss_c: 1.17
+[8781] loss_f: 1.87 loss_c: 1.13
+[8791] loss_f: 1.63 loss_c: 1.13
+[8801] loss_f: 1.50 loss_c: 1.16
+[8811] loss_f: 1.75 loss_c: 1.21
+[8821] loss_f: 1.70 loss_c: 1.17
+[8831] loss_f: 1.71 loss_c: 1.19
+[8841] loss_f: 2.44 loss_c: 1.17
+[8851] loss_f: 1.60 loss_c: 1.10
+[8861] loss_f: 1.55 loss_c: 1.18
+[8871] loss_f: 1.75 loss_c: 1.16
+[8881] loss_f: 1.74 loss_c: 1.14
+[8891] loss_f: 1.58 loss_c: 1.10
+[8901] loss_f: 1.44 loss_c: 1.11
+[8911] loss_f: 1.73 loss_c: 1.11
+[8921] loss_f: 1.56 loss_c: 1.10
+[8931] loss_f: 1.55 loss_c: 1.17
+[8941] loss_f: 1.59 loss_c: 1.14
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-lt493wdv'
+[8951] loss_f: 2.20 loss_c: 1.06
+[8961] loss_f: 1.81 loss_c: 1.10
+[8971] loss_f: 1.72 loss_c: 1.15
+[8981] loss_f: 1.64 loss_c: 1.56
+[8991] loss_f: 1.45 loss_c: 1.17
+[9001] loss_f: 1.74 loss_c: 1.19
+[9011] loss_f: 1.69 loss_c: 1.15
+[9021] loss_f: 1.61 loss_c: 1.27
+[9031] loss_f: 1.43 loss_c: 1.21
+[9041] loss_f: 1.27 loss_c: 1.10
+[9051] loss_f: 1.79 loss_c: 1.26
+Traceback (most recent call last):
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 303, in _run_finalizers
+    finalizer()
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 227, in __call__
+    res = self._callback(*self._args, **self._kwargs)
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/multiprocessing/util.py", line 136, in _remove_temp_dir
+    rmtree(tempdir, onerror=onerror)
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 763, in rmtree
+    onerror(os.rmdir, path, sys.exc_info())
+  File "/home/oyoungquist/.conda/envs/rina/lib/python3.11/shutil.py", line 761, in rmtree
+    os.rmdir(path, dir_fd=dir_fd)
+OSError: [Errno 39] Directory not empty: '/tmp/pymp-9zefuish'
+[9061] loss_f: 1.76 loss_c: 1.14
+[9071] loss_f: 1.62 loss_c: 1.10
+[9081] loss_f: 1.44 loss_c: 1.13
+[9091] loss_f: 1.58 loss_c: 1.22
+[9101] loss_f: 1.65 loss_c: 1.08
+[9111] loss_f: 1.46 loss_c: 1.51
+[9121] loss_f: 2.49 loss_c: 1.38
+[9131] loss_f: 1.70 loss_c: 1.24
+[9141] loss_f: 1.73 loss_c: 1.18
+[9151] loss_f: 1.43 loss_c: 1.17
+[9161] loss_f: 1.70 loss_c: 1.15
+[9171] loss_f: 1.81 loss_c: 1.16
+[9181] loss_f: 1.57 loss_c: 1.11
+[9191] loss_f: 1.59 loss_c: 1.25
+[9201] loss_f: 1.26 loss_c: 1.20
+[9211] loss_f: 1.68 loss_c: 1.13
+[9221] loss_f: 1.65 loss_c: 1.15
+[9231] loss_f: 1.50 loss_c: 1.23
+[9241] loss_f: 1.62 loss_c: 1.11
+[9251] loss_f: 1.40 loss_c: 1.10
+[9261] loss_f: 1.39 loss_c: 1.09
+[9271] loss_f: 1.63 loss_c: 1.14
+[9281] loss_f: 1.69 loss_c: 1.16
+[9291] loss_f: 1.76 loss_c: 1.17
+[9301] loss_f: 1.81 loss_c: 1.22
+[9311] loss_f: 1.62 loss_c: 2.67
+[9321] loss_f: 2.11 loss_c: 1.65
+[9331] loss_f: 1.81 loss_c: 1.54
+[9341] loss_f: 1.66 loss_c: 1.62
+[9351] loss_f: 1.51 loss_c: 1.97
+[9361] loss_f: 1.36 loss_c: 1.84
+[9371] loss_f: 1.66 loss_c: 2.13
+[9381] loss_f: 1.87 loss_c: 1.51
+[9391] loss_f: 1.43 loss_c: 1.88
+[9401] loss_f: 1.48 loss_c: 1.28
+[9411] loss_f: 1.61 loss_c: 1.65
+[9421] loss_f: 1.35 loss_c: 1.12
+[9431] loss_f: 1.54 loss_c: 1.16
+[9441] loss_f: 1.63 loss_c: 1.29
+[9451] loss_f: 1.56 loss_c: 1.64
+[9461] loss_f: 1.51 loss_c: 1.85
+[9471] loss_f: 1.78 loss_c: 1.30
+[9481] loss_f: 1.39 loss_c: 1.33
+[9491] loss_f: 1.41 loss_c: 1.47
+[9501] loss_f: 1.74 loss_c: 2.19
+[9511] loss_f: 1.60 loss_c: 1.72
+[9521] loss_f: 1.52 loss_c: 1.91
+[9531] loss_f: 1.49 loss_c: 1.12
+[9541] loss_f: 1.39 loss_c: 1.12
+[9551] loss_f: 1.72 loss_c: 1.17
+[9561] loss_f: 1.53 loss_c: 1.29
+[9571] loss_f: 1.52 loss_c: 1.27
+[9581] loss_f: 1.63 loss_c: 1.23
+[9591] loss_f: 1.47 loss_c: 1.10
+[9601] loss_f: 1.55 loss_c: 1.16
+[9611] loss_f: 1.73 loss_c: 1.11
+[9621] loss_f: 1.61 loss_c: 1.10
+[9631] loss_f: 1.78 loss_c: 1.14
+[9641] loss_f: 1.67 loss_c: 1.15
+[9651] loss_f: 1.57 loss_c: 1.16
+[9661] loss_f: 1.44 loss_c: 1.13
+[9671] loss_f: 1.66 loss_c: 1.23
+[9681] loss_f: 1.51 loss_c: 1.15
+[9691] loss_f: 1.68 loss_c: 1.16
+[9701] loss_f: 1.48 loss_c: 1.11
+[9711] loss_f: 1.55 loss_c: 1.15
+[9721] loss_f: 1.80 loss_c: 1.11
+[9731] loss_f: 2.31 loss_c: 1.11
+[9741] loss_f: 1.67 loss_c: 1.22
+[9751] loss_f: 1.52 loss_c: 1.10
+[9761] loss_f: 1.80 loss_c: 1.13
+[9771] loss_f: 1.46 loss_c: 1.12
+[9781] loss_f: 1.46 loss_c: 1.09
+[9791] loss_f: 1.62 loss_c: 1.10
+[9801] loss_f: 1.40 loss_c: 1.15
+[9811] loss_f: 1.48 loss_c: 1.14
+[9821] loss_f: 1.78 loss_c: 1.13
+[9831] loss_f: 1.54 loss_c: 1.10
+[9841] loss_f: 1.70 loss_c: 1.10
+[9851] loss_f: 1.67 loss_c: 1.10
+[9861] loss_f: 1.83 loss_c: 1.11
+[9871] loss_f: 1.43 loss_c: 1.16
+[9881] loss_f: 1.48 loss_c: 1.13
+[9891] loss_f: 1.27 loss_c: 1.11
+[9901] loss_f: 1.50 loss_c: 1.13
+[9911] loss_f: 1.39 loss_c: 1.11
+[9921] loss_f: 2.26 loss_c: 1.11
+[9931] loss_f: 1.63 loss_c: 1.13
+[9941] loss_f: 1.57 loss_c: 1.13
+[9951] loss_f: 1.61 loss_c: 1.15
+[9961] loss_f: 1.46 loss_c: 1.13
+[9971] loss_f: 1.73 loss_c: 1.11
+[9981] loss_f: 1.50 loss_c: 1.11
+[9991] loss_f: 1.38 loss_c: 1.09
+**** : 10lb ****
+Before learning: MSE is  9.64
+Mean predictor: MSE is  9.31
+After learning phi(x): MSE is  1.75
+
+**** : 10lb_left ****
+Before learning: MSE is  9.57
+Mean predictor: MSE is  9.21
+After learning phi(x): MSE is  2.33
+
+**** : 5lb_front ****
+Before learning: MSE is  7.56
+Mean predictor: MSE is  7.37
+After learning phi(x): MSE is  1.68
+
+**** : 10lb_front ****
+Before learning: MSE is  9.66
+Mean predictor: MSE is  9.30
+After learning phi(x): MSE is  2.07
+
+**** : 5lb ****
+Before learning: MSE is  8.56
+Mean predictor: MSE is  8.38
+After learning phi(x): MSE is  1.89
+
+**** : 5lb_left ****
+Before learning: MSE is  7.39
+Mean predictor: MSE is  7.20
+After learning phi(x): MSE is  1.26
+
+**** : 12_5lb ****
+Before learning: MSE is  12.00
+Mean predictor: MSE is  11.62
+After learning phi(x): MSE is  2.10
+
+**** : 0lb ****
+Before learning: MSE is  5.15
+Mean predictor: MSE is  5.09
+After learning phi(x): MSE is  1.12
+
+**** overall averages ****
+
+Before learning - MSE asg:  8.69
+Before learning - MSE stddev:  1.91
+Mean predictor - MSE avg:  8.43
+Mean predictor - MSE stddev:  1.81
+After learning phi(x) - MSE avg:  1.77
+After learning phi(x) - MSE stddev:  0.39
+
