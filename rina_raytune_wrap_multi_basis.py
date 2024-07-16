@@ -16,7 +16,7 @@ import json
 import matplotlib.pyplot as plt
 
 
-class RINA_Tune():
+class RINA_Tune_Multi_Basis():
 
     def __init__(self, options):
         if sys.platform == 'win32':
@@ -85,8 +85,8 @@ class RINA_Tune():
         self.modelname = f"{self.dataset}_dim-a-{self.dim_a}_{'-'.join(self.features)}"
 
         # Build the neural nets
-        self.phi_net = mlmodel.Phi_Net(options)
-        self.h_net = mlmodel.H_Net_CrossEntropy(options)
+        self.phi_net = mlmodel.Phi_Net_Multi(options)
+        self.h_net = mlmodel.H_Net_Multi_CrossEntropy(options)
 
         # Create the losses
         self.criterion = nn.MSELoss()
@@ -114,7 +114,6 @@ class RINA_Tune():
             json.dump(self.options, f)
             f.close()
 
-
     def save_data_plots(self):
         training_data_images = os.path.join(self.output_path_base, "training_data_images")
         test_data_images = os.path.join(self.output_path_base, "test_data_images")
@@ -130,7 +129,6 @@ class RINA_Tune():
 
         for data in self.TestData:
             utils.plot_subdataset(data, self.features, self.labels, os.path.join(test_data_images, "{:s}.png".format(data.meta['condition'])), title_prefix="(Testing Data)")
-
     
     def train_model(self):
         # Iterate over the desired number of epochs
@@ -158,22 +156,15 @@ class RINA_Tune():
                 self.optimizer_phi.zero_grad()
 
                 '''
-                Least-square to get $a$ from K-shot data
+                Least-squares to get $a$ from K-shot data
                 '''
                 # push data to device
                 X = kshot_data['input'].to(self.device) # K x dim_x
                 Y = kshot_data['output'].to(self.device) # K x dim_y
-                Phi = self.phi_net(X) # K x dim_a
-                Phi_T = Phi.transpose(0, 1) # dim_a x K
-                A = torch.inverse(torch.mm(Phi_T, Phi)) # dim_a x dim_a
-                a = torch.mm(torch.mm(A, Phi_T), Y) # dim_a x dim_y
-                if torch.norm(a, 'fro') > self.gamma:
-                    a = a / torch.norm(a, 'fro') * self.gamma
-
+                a = mlmodel.update_mixing_params(self.phi_net, X, Y, self.options)
                 # push data off of device
                 X.cpu()
                 Y.cpu()
-                A.cpu()
                 
                 '''
                 Batch training \phi_net
@@ -183,15 +174,19 @@ class RINA_Tune():
                 
                 c_labels = data['c'].type(torch.long).to(self.device)
                     
-                # forward + backward + optimize
-                outputs = torch.mm(self.phi_net(inputs), a)
+                # forward pass for resdiaul-tau prediction
+                outputs = mlmodel.predict_residual_torques(self.phi_net, inputs, a, self.options)                
                 loss_f = self.criterion(outputs, labels)
-                temp = self.phi_net(inputs)
                 
+                # perform the GAN-syle disciminator loss calculation
+                temp = self.phi_net(inputs)
                 loss_c = self.criterion_h(self.h_net(temp), c_labels)
                     
+                # calculate total loss
                 loss_phi = loss_f - self.alpha * loss_c
+                # backwards step
                 loss_phi.backward()
+                # perfrom the update
                 self.optimizer_phi.step()
 
                 '''
@@ -228,7 +223,6 @@ class RINA_Tune():
                 inputs.to('cpu')
                 labels.to('cpu')
                 c_labels.to('cpu')
-                a.to('cpu')
             
             # Save statistics
             self.Loss_f.append(running_loss_f / self.num_train_classes)
@@ -238,7 +232,7 @@ class RINA_Tune():
     
             with torch.no_grad():
                 for j in range(len(self.TestData)):
-                    loss_nominal, loss_mean, loss_phi = mlmodel.error_statistics(self.TestData[j].X, self.TestData[j].Y, self.phi_net, self.h_net, options=self.options)
+                    loss_nominal, loss_mean, loss_phi = mlmodel.error_statistics_multi(self.TestData[j].X, self.TestData[j].Y, self.phi_net, self.h_net, options=self.options)
                     self.Loss_test_nominal[j].append(loss_nominal)
                     self.Loss_test_mean[j].append(loss_mean)
                     self.Loss_test_phi[j].append(loss_phi)
@@ -298,7 +292,7 @@ class RINA_Tune():
             # print(data.meta['condition'] + ':')
             # print(len(data.X))
             file_name = "{:s}.png".format(data.meta['condition'])
-            mlmodel.vis_validation(t=data.meta['steps'], x=data.X, y=data.Y, phi_net=self.phi_net, h_net=self.h_net, 
+            mlmodel.vis_validation_multi(t=data.meta['steps'], x=data.X, y=data.Y, phi_net=self.phi_net, h_net=self.h_net, 
                                 idx_adapt_start=eval_adapt_start, idx_adapt_end=eval_adapt_end, 
                                 idx_val_start=eval_val_start, idx_val_end=eval_val_end, c=self.TestData[i].C, options=self.options,
                                 output_path_prefix=output_path_ims, output_name=file_name)
@@ -309,7 +303,7 @@ class RINA_Tune():
         
         for data in self.TestData:
             image_name = "{:s}_errors_hist.png".format(data.meta['condition'])
-            error_1, error_2, error_3 = mlmodel.error_statistics_hist(data.X, data.Y, self.phi_net, self.h_net, self.options, output_path_ims, image_name)
+            error_1, error_2, error_3 = mlmodel.error_statistics_hist_multi(data.X, data.Y, self.phi_net, self.h_net, self.options, output_path_ims, image_name)
             print('**** :', data.meta['condition'], '****')
             print(f'Before learning: MSE is {error_1: .2f}')
             print(f'Mean predictor: MSE is {error_2: .2f}')
