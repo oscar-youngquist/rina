@@ -362,6 +362,7 @@ class RINA_Tune():
         self.phi_net.to('cpu')
         final_model = self.phi_net.to('cpu')
         final_model.options['device'] = 'cpu'
+        final_model.device = 'cpu'
 
         # convert the trained python model to a Torch.Script model
         # An example input you would normally provide to your model's forward() method.
