@@ -4,7 +4,7 @@ from ray.tune.schedulers import ASHAScheduler, HyperBandScheduler
 from ray.tune.search import ConcurrencyLimiter
 from ray.tune import Trainable
 
-from rina_raytune_wrap import RINA_Tune
+from rina_raytune_wrap_multi_basis import RINA_Tune_Multi_Basis
 import numpy as np
 import pandas as pd
 import os
@@ -25,7 +25,7 @@ def objective(options):
     config_output_path                = os.path.join(options["output_path"], "config.json")
 
     # this will train a model for some number of epochs...
-    model_trainer = RINA_Tune(options)
+    model_trainer = RINA_Tune_Multi_Basis(options)
 
     # save out the config path
     model_trainer.save_config(config_output_path)
@@ -121,11 +121,13 @@ def tune_RINA(num_samples, prefix, config_dict):
     # options['test_path']        = '/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/eval_data_corrected/'
     options["body_offset"]      = 0
     options['shuffle']          = True
-    options['K_shot']           = 50 # number of K-shot for least square on a
-    options['phi_shot']         = 256 # batch size for training phi
+    options['K_shot']           = 320 # number of K-shot for least square on a
+    options['phi_shot']         = 2048 # batch size for training phi
     options['loss_type']        = 'crossentropy-loss'
     options['display_progress'] = False
     options['device']           = 'cuda'
+    options['num_legs']           = 4
+    options['num_joints']         = 3
 
     for key in config_dict.keys():
 
@@ -217,3 +219,5 @@ if __name__ == '__main__':
 
     df = results.get_dataframe()
     df.to_csv("/home/oyoungquist/Research/RINA/rina/{:s}_df_results.csv".format(df_prefix)) 
+
+    # python3 raytune_rina_multi_basis.py --prefix raytune/extended_state/multi_basis/centered_corrected --label tau_residual_cmd_centered --features body_rp q body_rp_dot q_dot tau_cmd --num-samples 500 --df-prefix es_nofeet_cc_mb_1000epochs

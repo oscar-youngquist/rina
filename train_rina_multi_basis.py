@@ -203,3 +203,5 @@ if __name__ == '__main__':
 # nohup python3 train_rina.py --output-prefix cmd_residual_centered_c --num-epochs 10000 --label tau_residual_cmd_centered --discrim-hidden 64 --phi-first-out 128 --phi-second-out 128 --device cuda:0 --phi-shot 2048 > bigger_hnet_fixed_arch_test.txt &
 
 # python3 train_rina.py --output-prefix cmd_residual_centered_c/extended_state --num-epochs 15000 --label tau_residual_cmd_centered --discrim-hidden 128 --phi-first-out 64 --phi-second-out 128 --device cuda:0 --phi-shot 2048 --K-shot 256 --features body_rp q body_rp_dot q_dot tau_cmd --no-save-data-plots
+
+# python3 train_rina_multi_basis.py --output-prefix cmd_residual_centered_c/extended_state/multi_basis/post_ray --num-epochs 10000 --label tau_residual_cmd_centered --discrim-hidden 100 --phi-first-out 128 --phi-second-out 80 --device cuda:0 --phi-shot 2048 --K-shot 320 --features body_rp q body_rp_dot q_dot tau_cmd --no-save-data-plots --dim-a 5 --SN 8 --learning-rate 0.003957 --alpha 0.026646

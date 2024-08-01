@@ -84,12 +84,22 @@ if __name__ == '__main__':
     # parser.add_argument('--test-path', type=str, 
     #                     default='/home/hcr/Research/DARoSLab/DARoS-Core/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 
     #                     help='Path to eval data')
+    
     parser.add_argument('--train-path', type=str, 
-                        default='/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/training_data_corrected/', 
+                        default='/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/training_data_cs/', 
                         help='Path to training data')
     parser.add_argument('--test-path', type=str, 
-                        default='/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/eval_data_corrected/', 
+                        default='/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal/eval_data_cs/', 
                         help='Path to eval data')
+    
+    # parser.add_argument('--train-path', type=str, 
+    #                     default='/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal_clean/training_data_cse_3/', 
+    #                     help='Path to training data')
+    # parser.add_argument('--test-path', type=str, 
+    #                     default='/home/oyoungquist/Research/RINA/rina/data/lcm_converted_log/06_24_2024_formal_clean/eval_data_cse_3/', 
+    #                     help='Path to eval data')
+    
+
     # parser.add_argument('--train-path', type=str, 
     #                     default='/work/pi_hzhang2_umass_edu/oyoungquist_umass_edu/RINA/rina/data/06_24_2024_formal/training_data_corrected/', 
     #                     help='Path to training data')
@@ -201,3 +211,15 @@ if __name__ == '__main__':
 # nohup python3 train_rina.py --output-prefix cmd_residual_centered_c --num-epochs 10000 --label tau_residual_cmd_centered --discrim-hidden 64 --phi-first-out 128 --phi-second-out 128 --device cuda:0 --phi-shot 2048 > bigger_hnet_fixed_arch_test.txt &
 
 # python3 train_rina.py --output-prefix cmd_residual_centered_c/extended_state --num-epochs 15000 --label tau_residual_cmd_centered --discrim-hidden 128 --phi-first-out 64 --phi-second-out 128 --device cuda:0 --phi-shot 2048 --K-shot 256 --features body_rp q body_rp_dot q_dot tau_cmd --no-save-data-plots
+
+# python3 train_rina.py --output-prefix cmd_residual_centered_full/extended_state/post_ray --num-epochs 10000 --label tau_residual_full --discrim-hidden 40 --phi-first-out 80 --phi-second-out 128 --device cuda:0 --phi-shot 2048 --K-shot 320 --features body_rp q body_rp_dot q_dot tau_cmd --no-save-data-plots --learning-rate 0.003988 --alpha 0.019565 --dim-a 14 --SN 6
+
+# python3 train_rina.py --output-prefix cmd_residual_cs/extended_state --num-epochs 10000 --label tau_residual_cmd_cs --discrim-hidden 40 --phi-first-out 80 --phi-second-out 128 --device cuda:0 --phi-shot 2048 --K-shot 320 --features body_rp q body_rp_dot q_dot tau_cmd --no-save-data-plots --learning-rate 0.003988 --alpha 0.019565 --dim-a 14 --SN 6
+
+# python3 train_rina.py --output-prefix cmd_residual_cs/extended_state/12_5_lbs --num-epochs 10000 --label tau_residual_cmd_cs --discrim-hidden 40 --phi-first-out 100 --phi-second-out 128 --device cuda:0 --phi-shot 2048 --K-shot 320 --features body_rp q body_rp_dot q_dot tau_cmd --no-save-data-plots --learning-rate 0.00138 --alpha 0.0238 --dim-a 16 --SN 6 --gamma 10
+
+# python3 train_rina.py --output-prefix cmd_residual_cs_update/extended_state/12_5lbs --num-epochs 10000 --label tau_residual_cmd_cs --discrim-hidden 40 --phi-first-out 100 --phi-second-out 128  --device cuda:0 --phi-shot 2048 --K-shot 320 --features body_rp q body_rp_dot q_dot tau_cmd --no-save-data-plots --learning-rate 0.00138 --alpha 0.0238 --dim-a 16 --SN 6 --gamma 10
+
+# python3 train_rina.py --output-prefix cmd_residual_cs_update/extended_state/15lbs --num-epochs 10000 --label tau_residual_cmd_cs --discrim-hidden 40 --phi-first-out 100 --phi-second-out 128  --device cuda:0 --phi-shot 2048 --K-shot 320 --features body_rpy q body_velo body_ang_velo q_dot tau_cmd --no-save-data-plots --learning-rate 0.00138 --alpha 0.0238 --dim-a 16 --SN 6 --gamma 10
+
+# python3 train_rina.py --output-prefix cmd_residual_cse/corrected/extended_state/15lbs --num-epochs 10000 --label tau_residual_cmd_cse --discrim-hidden 40 --phi-first-out 100 --phi-second-out 128 --device cuda:0 --phi-shot 2048 --K-shot 320 --features body_rp q body_rp_dot q_dot tau_cmd --no-save-data-plots --learning-rate 0.000345 --alpha 0.0238 --dim-a 16 --SN 6 --gamma 10
