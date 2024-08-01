@@ -1,4 +1,4 @@
-from rina_raytune_wrap import RINA_Tune
+from rina_raytune_wrap_multi_basis import RINA_Tune_Multi_Basis
 import numpy as np
 import pandas as pd
 import os
@@ -21,7 +21,7 @@ def run_training_loop(options):
     config_output_path                = os.path.join(options["output_path"], "config.json")
 
     # this will train a model for some number of epochs...
-    model_trainer = RINA_Tune(options)
+    model_trainer = RINA_Tune_Multi_Basis(options)
 
     # save out the config path
     model_trainer.save_config(config_output_path)
@@ -110,6 +110,9 @@ if __name__ == '__main__':
     parser.add_argument('--K-shot', type=int, default=50, help='Hidden layer size for discriminator (default: 64)')
     parser.add_argument('--phi-shot', type=int, default=2048, help='Training batch-size (default: 64)')
     parser.add_argument('--device', type=str, default='cuda:0', help='Training device (default: cuda:0)')
+    parser.add_argument('--num-legs', type=int, default=4, help='Number of legs on the robot (default: 4)')
+    parser.add_argument('--num-joints', type=int, default=3, help='Number of joints per-leg (default: 3)')
+
 
     parser.add_argument('--shuffle', action="store_true", help='Shuffle training data (default: True)')
     parser.add_argument('--no-shuffle', dest="shuffle", action="store_false")
@@ -138,7 +141,6 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     options = {}
-
     # # fill in the default values...
     options["dim_a"]           = 16
     options["features"]        = ['q', 'q_dot', 'tau_cmd']
